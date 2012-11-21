@@ -13,7 +13,7 @@
   (read-db
    (sql/with-query-results r
      [(format "SELECT * FROM image order by added desc limit %d" limit)]
-     r)))
+     (doall r))))
 
 (defn list-page "Render a listing of recent photos."
   []
@@ -24,9 +24,9 @@
      (interpose
       " "
       (for [p (recent-photos {})]
-        [:a {:href (format "/image/%d" (:imageID p))}
-         [:img {:src (format "%s.thumb.jpg" (:imageID p))}]
+        [:a {:href (format "/image/%d" (:imageID p))} ;; TODO: use URL formatter
+         [:img {:src (format "/image/%d/dl/thumb" (:imageID p))}]
          (h (:label p))]))]]))
 
 (defroutes listing-routes
-  (GET "/list" [] (list-page)))
+  (GET "/" [] (list-page)))

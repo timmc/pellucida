@@ -6,9 +6,11 @@
               (core :refer (defroutes GET)))
    [hiccup.middleware :refer (wrap-base-url)]
    (org.timmc.pellucida (listing :refer (listing-routes))
+                        (thumbs :refer (thumb-routes))
                         (db :refer (*db-spec*)))))
 
 (defroutes all-routes
+  thumb-routes
   listing-routes)
 
 #_
