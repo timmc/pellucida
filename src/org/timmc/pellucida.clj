@@ -8,6 +8,7 @@
    [hiccup.middleware :refer (wrap-base-url)]
    (org.timmc.pellucida (settings :as settings)
                         (listing :refer (listing-routes))
+                        (single :refer (single-routes))
                         (thumbs :refer (thumb-routes))
                         (db :refer (*db-spec*)))))
 
@@ -19,8 +20,10 @@
     (throw (RuntimeException. "Missing PELL_CONFIG environment variable."))))
 
 (defroutes all-routes
+  (route/resources "/" {:root "public"})
   thumb-routes
-  listing-routes)
+  listing-routes
+  single-routes)
 
 (def app "Server entrance point."
   (-> (handler/site all-routes)
