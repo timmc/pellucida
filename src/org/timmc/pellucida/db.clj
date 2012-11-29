@@ -13,4 +13,6 @@
 (defmacro read-db ;; TODO make connection read-only
   [& body]
   `(binding [clojure.java.jdbc.internal/*as-key* str]
-     (sql/with-connection (assoc *db-spec* :subname (:gallery-db @settings/config)) ~@body)))
+     (sql/with-connection
+       (assoc *db-spec* :subname (:gallery-db @settings/config))
+       ~@body)))

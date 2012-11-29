@@ -17,6 +17,9 @@ The config file must be a Clojure map of two keys:
 
 ## License
 
-Copyright © 2012 Tim McCormack
+Copyright © 2012 Tim McCormack, except for items in ./resources/public/vendor.
 
 Distributed under the Eclipse Public License, the same as Clojure.
+
+(Rights and license are not yet stable due to a dependency on a CSS grid
+library with an indeterminate license.)
