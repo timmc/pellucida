@@ -23,8 +23,8 @@
 
 ;;;; html
 
-(def std (e/html-resource "org/timmc/pellucida/html/standard.html"))
-(def pg (e/html-resource "org/timmc/pellucida/html/listing.html"))
+(defn std [] (e/html-resource "org/timmc/pellucida/html/standard.html"))
+(defn pg [] (e/html-resource "org/timmc/pellucida/html/listing.html"))
 
 (defn render "Render an enlive dom as an HTML string."
   [dom]
@@ -41,14 +41,14 @@
 
 (defn list-page "Render a listing of recent photos."
   []
-  (e/at std
+  (e/at (std)
         [:title] (e/content "Listing of photos")
-        [:head] (e/append (-> (e/select pg [:head]) first e/unwrap))
+        [:head] (e/append (-> (e/select (pg) [:head]) first e/unwrap))
         [:.std-ptitle] (e/content "Recent photos")
         ;; Replace the contents of .std-body in the standard template with
         ;; the contents of the (transformed) .std-body from the page template.
         [:.std-body] (e/content
-                      (e/at (e/select pg [:.std-body])
+                      (e/at (e/select (pg) [:.std-body])
                             [:.ths-container :.ths-one]
                             (e/clone-for [p (recent-photos {})]
                                          (ths-one p))))))
