@@ -21,6 +21,13 @@
               limit)]
      (doall r))))
 
+(defn total-count
+  [{:keys [filters] :or {filters []}}]
+  (read-db
+   (sql/with-query-results r
+     ["SELECT COUNT(*) as cnt FROM image"]
+     (:cnt (first r)))))
+
 ;;;; html
 
 (defn std [] (e/html-resource "org/timmc/pellucida/html/standard.html"))
@@ -51,7 +58,8 @@
                       (e/at (e/select (pg) [:.std-body])
                             [:.ths-container :.ths-one]
                             (e/clone-for [p (recent-photos {})]
-                                         (ths-one p))))))
+                                         (ths-one p))))
+        [:.total-count] (e/content (str (total-count {})))))
 
 (defroutes listing-routes
   (GET "/" [] (render (list-page))))
