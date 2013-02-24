@@ -2,7 +2,18 @@
   "Building links to various parts of the application."
   (:require (org.timmc.pellucida (settings :as settings))))
 
-(defn photo
+(defn listing "Photo listing with thumbnails."
+  [filters]
+  (if (seq filters)
+    "/todo"
+    "/"))
+
+(defn single "Single-image page."
+  [id]
+  {:pre [(integer? id)]}
+  (format "/image/%d" id))
+
+(defn photo "Photo file itself."
   [id which]
-  {:pre [(#{:fullsize :solo :thumb} which)]}
+  {:pre [(integer? id), (#{:fullsize :solo :thumb} which)]}
   (format "%s%d.%s.jpg" (:thumbs-link-base @settings/config) id (name which)))

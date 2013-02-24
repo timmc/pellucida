@@ -1,4 +1,14 @@
-.std-footer {
-  text-align: center;
+
+/* Module std: Standard page layout */
+
+.std-page {
+  margin: .3em 1em 1em;
 }
 
+.std-footer {
+  width: 100%;
+  text-align: center;
+  margin-top: 1em;
+  border-top: 1px dotted #888;
+  padding-top: .5em;
+}

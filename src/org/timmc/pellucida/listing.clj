@@ -37,7 +37,7 @@
   [p]
   (e/transformation
    ;; TODO: use URL formatter
-   [:a.ths-goto] (e/set-attr :href (format "/image/%d" (:imageID p)))
+   [:a.ths-goto] (e/set-attr :href (ln/single (:imageID p)))
    [:.ths-title] (e/content (:label p))
    [:img.ths-solo] (e/set-attr :src (ln/photo (:imageID p) :thumb))
    [:.ths-meta] (e/content (:added p))))

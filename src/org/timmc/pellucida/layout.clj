@@ -22,5 +22,7 @@ a set of simple values to insert, produce a stanard layout node tree.
         [:.std-ptitle] (e/content (:page-title vals))
         ;; Replace the contents of .std-body in the standard template with
         ;; the contents of the (transformed) .std-body from the page template.
-        [:.std-body] (e/content
-                      (body-xform (e/select pg-resource [:.std-body])))))
+        [:.std-body] (e/substitute
+                      (body-xform
+                       (e/transform (e/select pg-resource [:.std-body])
+                                    [:.std-body] (e/remove-attr :stitch))))))
