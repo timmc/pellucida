@@ -36,7 +36,7 @@
    ;; TODO: use URL formatter
    [:a.ths-goto] (e/set-attr :href (format "/image/%d" (:imageID p)))
    [:.ths-title] (e/content (:label p))
-   [:a.ths-goto :img] (e/set-attr :src (ln/photo (:imageID p) :thumb))
+   [:img.ths-solo] (e/set-attr :src (ln/photo (:imageID p) :thumb))
    [:.ths-meta] (e/content (:added p))))
 
 (defn list-page "Render a listing of recent photos."

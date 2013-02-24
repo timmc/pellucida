@@ -1,0 +1,48 @@
+/* .ths: Thumbs listing */
+
+.ths-container:after {
+  display: block;
+  content: "";
+  clear: both;
+}
+
+.ths-one {
+  float: left;
+  margin: .5em;
+  width: 210px; /* a little wider than the image */
+}
+
+.ths-title {
+  font-size: 1.1em;
+  margin: 0;
+  padding: .2em 0;
+  font-weight: normal;
+  text-decoration: none;
+}
+
+.ths-meta {
+  margin: 0;
+  padding: .1em 0;
+  font-size: .8em;
+}
+
+.ths-imglink {
+  display: block;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+  /* matting effect */
+  border: 2px solid #222;
+  padding: 5px;
+  background: #eee;
+}
+
+img.ths-solo {
+}
+
+.ths-title, .ths-meta {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
