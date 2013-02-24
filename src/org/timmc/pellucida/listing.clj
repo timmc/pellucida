@@ -4,6 +4,7 @@
    [net.cgrand.enlive-html :as e]
    [compojure.core :refer (defroutes GET)]
    (org.timmc.pellucida (db :refer (read-db))
+                        (layout :as lay)
                         (link :as ln))
    [clojure.java.jdbc :as sql]))
 
@@ -30,12 +31,7 @@
 
 ;;;; html
 
-(defn std [] (e/html-resource "org/timmc/pellucida/html/standard.html"))
 (defn pg [] (e/html-resource "org/timmc/pellucida/html/listing.html"))
-
-(defn render "Render an enlive dom as an HTML string."
-  [dom]
-  (apply str (e/emit* dom)))
 
 (defn ths-one "Transformation for a .ths-one node using a photo record."
   [p]
@@ -48,18 +44,14 @@
 
 (defn list-page "Render a listing of recent photos."
   []
-  (e/at (std)
-        [:title] (e/content "Listing of photos")
-        [:head] (e/append (-> (e/select (pg) [:head]) first e/unwrap))
-        [:.std-ptitle] (e/content "Recent photos")
-        ;; Replace the contents of .std-body in the standard template with
-        ;; the contents of the (transformed) .std-body from the page template.
-        [:.std-body] (e/content
-                      (e/at (e/select (pg) [:.std-body])
-                            [:.ths-container :.ths-one]
-                            (e/clone-for [p (recent-photos {})]
-                                         (ths-one p))))
-        [:.total-count] (e/content (str (total-count {})))))
+  (lay/standard
+   (pg)
+   (e/transformation
+    [:.ths-container :.ths-one] (e/clone-for [p (recent-photos {})]
+                                             (ths-one p))
+    [:.total-count] (e/content (str (total-count {}))))
+   {:doc-title "Listing of photos"
+    :page-title "Recent photos"}))
 
 (defroutes listing-routes
-  (GET "/" [] (render (list-page))))
+  (GET "/" [] (lay/render (list-page))))

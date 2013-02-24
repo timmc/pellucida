@@ -6,7 +6,6 @@
   :min-lein-version "2"
   :dependencies [[org.clojure/clojure "1.4.0"]
                  [compojure "1.1.3"]
-                 [hiccup "1.0.2"]
                  [org.xerial/sqlite-jdbc "3.7.2"]
                  [org.clojure/java.jdbc "0.2.3"]
                  [enlive "1.1.1"]]

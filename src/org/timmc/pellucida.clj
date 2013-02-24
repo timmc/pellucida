@@ -5,7 +5,6 @@
               (handler :as handler)
               (response :as response)
               (core :refer (defroutes GET)))
-   [hiccup.middleware :refer (wrap-base-url)]
    (org.timmc.pellucida (settings :as settings)
                         (listing :refer (listing-routes))
                         (single :refer (single-routes))
@@ -26,5 +25,4 @@
   single-routes)
 
 (def app "Server entrance point."
-  (-> (handler/site all-routes)
-      (wrap-base-url)))
+  (handler/site all-routes))
