@@ -5,13 +5,12 @@
 
 (defn find-image
   "Assumes id is a numeric string and size is an allowable format."
-  [id size]
-  (let [fn (format "%s.%s.jpg" id size)
-        f (java.io.File. (:thumbs-base @settings/config) fn)]
-    (when (.exists f) f)))
+  [filename]
+  (when (re-matches #"[0-9]+\.(fullsize|solo|thumb)\.jpg" filename)
+    (let [f (java.io.File. (:thumbs-proxy-base @settings/config) filename)]
+      (when (.exists f) f))))
 
 (defroutes thumb-routes
-  (GET ["/image/:id/dl/:size"
-        :id #"[0-9]+" :size #"fullsize|solo|thumb"]
-       [id size]
-       (find-image id size)))
+  (GET ["/thumbs/:filename"]
+       [filename]
+       (find-image filename)))

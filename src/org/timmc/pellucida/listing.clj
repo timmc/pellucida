@@ -3,7 +3,8 @@
   (:require
    [net.cgrand.enlive-html :as e]
    [compojure.core :refer (defroutes GET)]
-   [org.timmc.pellucida.db :refer (read-db)]
+   (org.timmc.pellucida (db :refer (read-db))
+                        (link :as ln))
    [clojure.java.jdbc :as sql]))
 
 ;;;; data
@@ -29,16 +30,13 @@
   [dom]
   (apply str (e/emit* dom)))
 
-(defn thumb-link [id]
-  (format "/image/%d/dl/thumb" id))
-
 (defn ths-one "Transformation for a .ths-one node using a photo record."
   [p]
   (e/transformation
    ;; TODO: use URL formatter
    [:a.ths-goto] (e/set-attr :href (format "/image/%d" (:imageID p)))
    [:.ths-title] (e/content (:label p))
-   [:a.ths-goto :img] (e/set-attr :src (thumb-link (:imageID p)))
+   [:a.ths-goto :img] (e/set-attr :src (ln/photo (:imageID p) :thumb))
    [:.ths-meta] (e/content (:added p))))
 
 (defn list-page "Render a listing of recent photos."

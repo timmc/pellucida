@@ -1,6 +1,6 @@
 (ns org.timmc.pellucida.settings)
 
-(def config ":thumbs-base, :gallery-db"
+(def config ":thumbs-proxy-base, :thumbs-link-base, :gallery-db"
   (atom nil))
 
 (defn setup!
