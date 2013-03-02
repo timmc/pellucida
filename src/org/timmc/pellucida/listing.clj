@@ -25,11 +25,11 @@
   [pag filters]
   (read-db
    (sql/with-query-results r
-     [(format "SELECT *
-               FROM image natural join image_meta
+     [(format "select *
+               from image natural join image_meta
                order by imageID desc
-               limit %d"
-              per-page)]
+               limit %d offset %d"
+              per-page (:first-record pag))]
      (doall r))))
 
 ;;;; html
@@ -48,11 +48,13 @@
 (defn list-page "Render a listing of recent photos."
   [cur-page filters]
   (let [pag (handy/paging (total-count filters) cur-page per-page)
-        photos (recent-photos pag filters)
+        photos (when (:cur-valid pag)
+                 (recent-photos pag filters))
         pager-node (pager/build-pager pag (partial ln/listing filters))]
     (lay/standard
      (pg)
      (e/transformation
+      ;; TODO: Better out-of-bounds and no-results pages
       [:.ths-container :.ths-one] (e/clone-for [p photos]
                                                (ths-one p))
       [:.pgr-container] (e/content pager-node)
@@ -60,5 +62,13 @@
      {:doc-title "Listing of photos"
       :page-title "Recent photos"})))
 
+(defn maybe-param
+  [request param parse default]
+  (if-let [s (get-in request [:params param])]
+    (parse s)
+    default))
+
 (defroutes listing-routes
-  (GET "/" [] (lay/render (list-page 0 []))))
+  (GET "/" [:as r]
+       (let [page (maybe-param r :page #(Integer/parseInt %) 0)]
+         (lay/render (list-page page [])))))

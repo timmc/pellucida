@@ -1,5 +1,9 @@
 /* Module pgr: Pager */
 
+.pgr-container {
+  min-height: 2.5em;
+}
+
 .pgr-go, .pgr-current, .pgr-elide {
   padding: .4em;
   margin: .2em;
