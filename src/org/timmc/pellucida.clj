@@ -6,13 +6,14 @@
               (response :as response)
               (core :refer (defroutes GET)))
    (org.timmc.pellucida (settings :as settings)
+                        (main :refer [main-routes])
                         (listing :refer (listing-routes))
                         (single :refer (single-routes))
-                        (thumbs :refer (thumb-routes))
-                        (db :refer (*db-spec*)))))
+                        (thumbs :refer (thumb-routes)))))
 
 (defroutes all-routes
   (route/resources "/" {:root "public"})
+  #'main-routes
   #'thumb-routes
   #'listing-routes
   #'single-routes)

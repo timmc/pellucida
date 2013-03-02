@@ -7,8 +7,8 @@
   (if (seq filters)
     "/todo"
     (if (zero? page)
-      "/"
-      (format "/?page=%d" page))))
+      "/list"
+      (format "/list?page=%d" page))))
 
 (defn single "Single-image page."
   [id]

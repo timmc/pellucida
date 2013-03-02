@@ -69,6 +69,6 @@
     default))
 
 (defroutes listing-routes
-  (GET "/" [:as r]
+  (GET "/list" [:as r]
        (let [page (maybe-param r :page #(Integer/parseInt %) 0)]
          (lay/render (list-page page [])))))
