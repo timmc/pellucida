@@ -3,7 +3,7 @@
   (:require [org.timmc.pellucida.settings :as settings]
             [clojure.java.jdbc :as sql]))
 
-(def ^:dynamic *db-spec*
+(defonce ^:dynamic *db-spec*
   {:classname "org.sqlite.JDBC"
    :subprotocol "sqlite"
    ;; :subname "FILL IN"
