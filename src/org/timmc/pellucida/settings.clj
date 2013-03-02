@@ -2,7 +2,7 @@
 
 (defn load-config
   []
-  (if-let [cnf-path (System/getenv "PELL_CONFIG")]
+  (if-let [cnf-path (or (System/getenv "PELL_CONFIG") "conf/production.clj")]
     (binding [*read-eval* false]
       (read-string (slurp cnf-path)))
     (throw (RuntimeException. "Missing PELL_CONFIG environment variable."))))

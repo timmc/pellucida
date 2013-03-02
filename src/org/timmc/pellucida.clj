@@ -34,11 +34,11 @@
 
 (defn start-server
   "Start server. Call .stop on return value to stop server."
-  []
-  (let [port (settings/config :port 3000)]
+  [port]
+  (let [port (or port (settings/config :port) 3000)]
     (println "Running pellucida on port" port)
     (run-jetty #'app {:port port
                       :join? false})))
 
-(defn -main [& args]
-  (start-server))
+(defn -main [& [port & args]]
+  (start-server (and port (Integer/parseInt port))))
