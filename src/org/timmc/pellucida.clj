@@ -7,9 +7,9 @@
               (core :refer [defroutes]))
    (org.timmc.pellucida (settings :as settings)
                         (main :refer [main-routes])
-                        (listing :refer (listing-routes))
-                        (single :refer (single-routes))
-                        (thumbs :refer (thumb-routes)))
+                        (listing :refer [listing-routes])
+                        (single :refer [single-routes])
+                        (thumbs :refer [thumb-routes]))
    [ring.adapter.jetty :refer [run-jetty]]))
 
 (defroutes all-routes

@@ -1,7 +1,7 @@
 (ns org.timmc.pellucida.thumbs
   "Routes for serving thumbnails."
   (:require (org.timmc.pellucida (settings :as settings))
-            [compojure.core :refer (defroutes GET)]))
+            [compojure.core :refer [defroutes GET]]))
 
 (defn find-image
   "Assumes id is a numeric string and size is an allowable format."

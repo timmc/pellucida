@@ -3,8 +3,8 @@
   (:require
    [org.timmc.handy :as handy]
    [net.cgrand.enlive-html :as e]
-   [compojure.core :refer (defroutes GET)]
-   (org.timmc.pellucida (db :refer (read-db))
+   [compojure.core :refer [defroutes GET]]
+   (org.timmc.pellucida (db :refer [read-db])
                         (layout :as lay)
                         (pager :as pager)
                         (link :as ln))

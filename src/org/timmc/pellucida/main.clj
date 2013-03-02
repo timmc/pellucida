@@ -2,7 +2,7 @@
   "Main page. Maybe show a few photos."
   (:require
    [net.cgrand.enlive-html :as e]
-   [compojure.core :refer (defroutes GET)]
+   [compojure.core :refer [defroutes GET]]
    (org.timmc.pellucida (layout :as lay)
                         (link :as ln))))
 

@@ -2,7 +2,7 @@
   "Showing just one photo."
   (:require
    [net.cgrand.enlive-html :as e]
-   [compojure.core :refer (defroutes GET)]
+   [compojure.core :refer [defroutes GET]]
    (org.timmc.pellucida (db :refer (read-db))
                         (layout :as lay)
                         (link :as ln))
