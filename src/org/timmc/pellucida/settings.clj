@@ -7,5 +7,6 @@
       (read-string (slurp cnf-path)))
     (throw (RuntimeException. "Missing PELL_CONFIG environment variable."))))
 
+;; TODO: Check for necessary & unknown config keys.
 (defonce ^{:doc ":thumbs-proxy-base, :thumbs-link-base, :gallery-db"}
   config (load-config))
