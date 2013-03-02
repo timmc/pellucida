@@ -3,10 +3,12 @@
   (:require (org.timmc.pellucida (settings :as settings))))
 
 (defn listing "Photo listing with thumbnails."
-  [filters]
+  [filters page]
   (if (seq filters)
     "/todo"
-    "/"))
+    (if (zero? page)
+      "/"
+      (format "/?page=%d" page))))
 
 (defn single "Single-image page."
   [id]

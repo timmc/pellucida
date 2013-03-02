@@ -1,0 +1,26 @@
+/* Module pgr: Pager */
+
+.pgr-container {
+  min-height: 2.5em;
+}
+
+.pgr-go, .pgr-current, .pgr-elide {
+  padding: .4em;
+  margin: .2em;
+  border: 1px solid;
+  line-height: 1.4;
+  font-weight: bold;
+}
+
+.pgr-go {
+  text-decoration: none;
+}
+
+.pgr-go, .pgr-current {
+  background: #ffd;
+}
+
+.pgr-elide {
+  border-color: transparent;
+}
+
