@@ -1,0 +1,16 @@
+#teaser .imglink {
+  text-decoration: none;
+}
+
+#teaser .imglink img {
+  border: 0;
+  vertical-align: middle;
+}
+
+.go-to-gallery {
+  font-size: 3em;
+  line-height: 2;
+  vertical-align: middle;
+  white-space: nowrap;
+}
+

@@ -2,6 +2,10 @@
   "Building links to various parts of the application."
   (:require (org.timmc.pellucida (settings :as settings))))
 
+(defn main "Main page"
+  []
+  "/")
+
 (defn listing "Photo listing with thumbnails."
   [filters page]
   (if (seq filters)
