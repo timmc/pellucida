@@ -1,8 +1,11 @@
 (ns org.timmc.pellucida.settings)
 
-(def config ":thumbs-proxy-base, :thumbs-link-base, :gallery-db"
-  (atom nil))
+(defn load-config
+  []
+  (if-let [cnf-path (System/getenv "PELL_CONFIG")]
+    (binding [*read-eval* false]
+      (read-string (slurp cnf-path)))
+    (throw (RuntimeException. "Missing PELL_CONFIG environment variable."))))
 
-(defn setup!
-  [cnf]
-  (reset! config cnf))
+(defonce ^{:doc ":thumbs-proxy-base, :thumbs-link-base, :gallery-db"}
+  config (load-config))
