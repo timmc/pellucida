@@ -20,9 +20,9 @@
 
 (defroutes all-routes
   (route/resources "/" {:root "public"})
-  thumb-routes
-  listing-routes
-  single-routes)
+  #'thumb-routes
+  #'listing-routes
+  #'single-routes)
 
 (def app "Server entrance point."
   (handler/site all-routes))
