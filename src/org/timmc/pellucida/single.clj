@@ -3,7 +3,7 @@
   (:require
    [net.cgrand.enlive-html :as e]
    [compojure.core :refer [defroutes GET]]
-   (org.timmc.pellucida (db :refer (read-db))
+   (org.timmc.pellucida (db :as db)
                         (layout :as lay)
                         (link :as ln))
    [clojure.java.jdbc :as sql]))
@@ -11,7 +11,7 @@
 (defn photo-data
   [id]
   {:pre [(integer? id)]}
-  (read-db
+  (db/read
    (sql/with-query-results r
      ["SELECT * FROM image WHERE imageID = ?" id]
      (first r))))
@@ -19,7 +19,7 @@
 (defn tags
   [id]
   {:pre [(integer? id)]}
-  (read-db
+  (db/read
    (sql/with-query-results r
      ["select catName, tagName, implicit
        from imagetags natural join tags natural join categories
@@ -28,6 +28,12 @@
      (doall r))))
 
 (defn pg [] (e/html-resource "org/timmc/pellucida/html/single.html"))
+
+;; TODO:
+;; Previous 3 images:
+;;   select imageID from image where imageID < ? order by imageID desc limit 3;
+;; Next 3 images:
+;;   select imageID from image where imageID > ? order by imageID asc limit 3;
 
 (defn single-page "Render a page for a single photo."
   [id]

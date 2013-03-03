@@ -4,9 +4,10 @@
    [org.timmc.handy :as handy]
    [net.cgrand.enlive-html :as e]
    [compojure.core :refer [defroutes GET]]
-   (org.timmc.pellucida (db :refer [read-db])
+   (org.timmc.pellucida (db :as db)
                         (layout :as lay)
                         (pager :as pager)
+                        (filter :as filter)
                         (link :as ln))
    [clojure.java.jdbc :as sql]))
 
@@ -14,23 +15,32 @@
 
 (defn total-count
   [filters]
-  (read-db
-   (sql/with-query-results r
-     ["SELECT COUNT(*) as cnt FROM image"]
-     (:cnt (first r)))))
+  (let [[fsql fparams] (reduce filter/sql-wrap nil filters)
+        sql (str "select count(*) as cnt from "
+                 (if fsql
+                   (str "( " fsql " )")
+                   "image"))
+        params fparams]
+    (db/read
+     (sql/with-query-results r
+       (db/jdbc-psql [sql params])
+       (:cnt (first r))))))
 
 (def per-page 30)
 
 (defn recent-photos
   [pag filters]
-  (read-db
-   (sql/with-query-results r
-     [(format "select *
-               from image natural join image_meta
-               order by imageID desc
-               limit %d offset %d"
-              per-page (:first-record pag))]
-     (doall r))))
+  (let [[fsql fparams] (reduce filter/sql-wrap nil filters)
+        sql (str "select * from image natural join image_meta "
+                 (when fsql
+                   (str " where imageID in ( " fsql " ) "))
+                 (format " order by imageID desc limit %d offset %d"
+                         per-page, (cast Long (:first-record pag))))
+        params fparams]
+    (db/read
+     (sql/with-query-results r
+       (db/jdbc-psql [sql params])
+       (doall r)))))
 
 ;;;; html
 
@@ -70,5 +80,6 @@
 
 (defroutes listing-routes
   (GET "/list" [:as r]
-       (let [page (maybe-param r :page #(Integer/parseInt %) 0)]
-         (lay/render (list-page page [])))))
+       (let [page (maybe-param r :page #(Integer/parseInt %) 0)
+             filters (filter/parse-request r)]
+         (lay/render (list-page page filters)))))

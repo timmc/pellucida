@@ -3,7 +3,7 @@
   (:require
    [net.cgrand.enlive-html :as e]
    [compojure.core :refer [defroutes GET]]
-   (org.timmc.pellucida (db :refer [read-db])
+   (org.timmc.pellucida (db :as db)
                         (layout :as lay)
                         (link :as ln))
    [clojure.java.jdbc :as sql]))
@@ -12,7 +12,7 @@
 
 (defn recent-photos
   []
-  (read-db
+  (db/read
    (sql/with-query-results r
      ["select * from image order by imageID desc limit 3"]
      (doall r))))

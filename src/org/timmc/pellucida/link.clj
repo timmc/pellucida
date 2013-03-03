@@ -1,6 +1,14 @@
 (ns org.timmc.pellucida.link
   "Building links to various parts of the application."
-  (:require (org.timmc.pellucida (settings :as settings))))
+  (:require (org.timmc.pellucida (settings :as settings)
+                                 (filter :as filter))))
+
+(defn ^:internal build-pq
+  "Build URL string from a path and a coll of querystring component strings."
+  [path qscs]
+  (if (seq qscs)
+    (apply str path "?" (interpose "&" qscs))
+    path))
 
 (defn main "Main page"
   []
@@ -8,11 +16,9 @@
 
 (defn listing "Photo listing with thumbnails."
   [filters page]
-  (if (seq filters)
-    "/todo"
-    (if (zero? page)
-      "/list"
-      (format "/list?page=%d" page))))
+  (let [filters (map filter/qsc filters)
+        page (when-not (zero? page) [(format "page=%d" page)])]
+    (build-pq "/list" (concat filters page))))
 
 (defn single "Single-image page."
   [id]
