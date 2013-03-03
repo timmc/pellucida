@@ -9,13 +9,13 @@
                         (main :refer [main-routes])
                         (listing :refer [listing-routes])
                         (single :refer [single-routes])
-                        (thumbs :refer [thumb-routes]))
+                        (proxy-images :refer [proxy-image-routes]))
    [ring.adapter.jetty :refer [run-jetty]]))
 
 (defroutes all-routes
   (route/resources "/" {:root "public"})
   #'main-routes
-  #'thumb-routes
+  #'proxy-image-routes
   #'listing-routes
   #'single-routes)
 
