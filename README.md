@@ -7,19 +7,28 @@ A web gallery fed by kpawebgen.
 With Leiningen v2:
 
 ```clojure
-PELL_CONFIG=path/to/config.clj lein ring server
+PELL_CONFIG=path/to/config.clj lein run
 ```
 
-The config file must be a Clojure map of two keys:
+The config file is expected to look something like this:
 
-* :thumbs-base -- path to directory of image files
-* :gallery-db -- path to SQLite v3 DB
+```clojure
+{:thumbs-link-base "/proxy-image/" ;; Proxy files from the local filesystem
+ :thumbs-proxy-base "/home/timmc/photos/web/gen/"
+ :gallery-db "/home/timmc/photos/web/kpawebgen.db3"
+ ;; Optional keys
+ :dev true
+ :port 8080}
+```
+
+Keys are documented in `org.timmc.pellucida.settings`.
 
 ## License
 
-Copyright © 2012 Tim McCormack, except for items in ./resources/public/vendor.
+Copyright © 2012–2013 Tim McCormack, except for vendored items in
+`./resources/public/vendor`.
 
-Distributed under the Eclipse Public License, the same as Clojure.
+Distributed under the Eclipse Public License v1.0, the same as Clojure.
 
-(Rights and license are not yet stable due to a dependency on a CSS grid
-library with an indeterminate license.)
+Division 2.0.0 CSS grid system is available under the Creative Commons
+Attribution-ShareAlike 3.0 Unported License.
