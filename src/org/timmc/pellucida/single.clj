@@ -16,6 +16,17 @@
      ["SELECT * FROM image WHERE imageID = ?" id]
      (first r))))
 
+(defn tags
+  [id]
+  {:pre [(integer? id)]}
+  (read-db
+   (sql/with-query-results r
+     ["select catName, tagName, implicit
+       from imagetags natural join tags natural join categories
+       where imageID = ?
+       order by catName asc, tagName asc" id]
+     (doall r))))
+
 (defn pg [] (e/html-resource "org/timmc/pellucida/html/single.html"))
 
 (defn single-page "Render a page for a single photo."
@@ -31,7 +42,13 @@
        [:.description] (e/content (:description data))
        [:.md-date] (e/content (str (:startDate data)))
        [:.md-angle] (e/content (str (:angle data)))
-       [:.md-dim] (e/content (format "%d x %d" (:width data) (:height data))))
+       [:.md-dim] (e/content (format "%d x %d" (:width data) (:height data)))
+       [:#tags :li] (e/clone-for [tag (tags id)]
+                                 (e/transformation
+                                  [:.cat] (e/content (:catName tag))
+                                  [:.tag] (e/content (:tagName tag))
+                                  [:.implicit] (when (= 1 (:implicit tag))
+                                                 identity))))
       {:doc-title (:label data)
        :page-title (:label data)}))
     {:status 404
