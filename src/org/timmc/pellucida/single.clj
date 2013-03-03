@@ -35,6 +35,27 @@
 ;; Next 3 images:
 ;;   select imageID from image where imageID > ? order by imageID asc limit 3;
 
+(defn tags-block
+  [id]
+  (e/transformation
+   [:group] (e/do->
+             (e/clone-for
+              [[cat-name tags] (group-by :catName (tags id))]
+              (e/transformation
+               [:.category] (e/content cat-name)
+               [:.tag] (e/clone-for
+                        [tag tags]
+                        (e/transformation
+                         [:.tagname] (e/content (:tagName tag))
+                         [:.implicit] (when (= 1 (:implicit tag))
+                                        identity)
+                         [:.tt]
+                         (let [filter {:type :tt
+                                       :cat (:catName tag)
+                                       :tag (:tagName tag)}]
+                           (e/set-attr :href (ln/listing [filter] 0)))))))
+             e/unwrap)))
+
 (defn single-page "Render a page for a single photo."
   [id]
   {:pre [(integer? id)]}
@@ -49,12 +70,7 @@
        [:.md-date] (e/content (str (:startDate data)))
        [:.md-angle] (e/content (str (:angle data)))
        [:.md-dim] (e/content (format "%d x %d" (:width data) (:height data)))
-       [:#tags :li] (e/clone-for [tag (tags id)]
-                                 (e/transformation
-                                  [:.cat] (e/content (:catName tag))
-                                  [:.tag] (e/content (:tagName tag))
-                                  [:.implicit] (when (= 1 (:implicit tag))
-                                                 identity))))
+       [:#tags] (tags-block id))
       {:doc-title (:label data)
        :page-title (:label data)}))
     {:status 404
