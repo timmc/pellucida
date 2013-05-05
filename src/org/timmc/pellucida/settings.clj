@@ -3,7 +3,8 @@
 
 (def keys-required
   {:thumbs-link-base
-   {:doc "Base URL for photo links, including trailing slash."
+   {:doc "Base URL for photo links, including trailing slash.
+To use the filesystem proxy, use /proxy-image/."
     :validate string?}
    :thumbs-proxy-base
    {:doc "Base path for images on filesystem, or nil if not proxying.

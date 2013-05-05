@@ -15,7 +15,7 @@
 ;;;; Version checking
 
 (def acceptable-gallery-versions
-  #{0})
+  #{1})
 
 (def last-check
   "Results of last check."

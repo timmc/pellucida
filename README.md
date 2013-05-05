@@ -21,6 +21,8 @@ The config file is expected to look something like this:
  :port 8080}
 ```
 
+Requires a kpawebgen gallery DB version 1.
+
 Keys are documented in `org.timmc.pellucida.settings`.
 
 ## License

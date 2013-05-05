@@ -21,10 +21,10 @@
   {:pre [(integer? id)]}
   (db/read
    (sql/with-query-results r
-     ["select catName, tagName, implicit
-       from imagetags natural join tags natural join categories
+     ["select cat, tag, implicit
+       from imagetags
        where imageID = ?
-       order by catName asc, tagName asc" id]
+       order by cat asc, tag asc" id]
      (doall r))))
 
 (defn pg [] (e/html-resource "org/timmc/pellucida/html/single.html"))
@@ -40,19 +40,19 @@
   (e/transformation
    [:group] (e/do->
              (e/clone-for
-              [[cat-name tags] (group-by :catName (tags id))]
+              [[cat-name tags] (group-by :cat (tags id))]
               (e/transformation
                [:.category] (e/content cat-name)
                [:.tag] (e/clone-for
                         [tag tags]
                         (e/transformation
-                         [:.tagname] (e/content (:tagName tag))
+                         [:.tagname] (e/content (:tag tag))
                          [:.implicit] (when (= 1 (:implicit tag))
                                         identity)
                          [:.tt]
                          (let [filter {:type :tt
-                                       :cat (:catName tag)
-                                       :tag (:tagName tag)}]
+                                       :cat (:cat tag)
+                                       :tag (:tag tag)}]
                            (e/set-attr :href (ln/listing [filter] 0)))))))
              e/unwrap)))
 

@@ -38,8 +38,8 @@ The return value is a valid input to db/jdbc-psql."
 
 (defmethod sql-wrap :tt [[isql iparams :as psql] {:keys [cat tag]}]
   (let [osql "select imageID
-from image natural join imagetags natural join tags natural join categories
-where catName = ? and tagName = ?"
+from image natural join imagetags
+where cat = ? and tag = ?"
         oparams [cat tag]]
     (if psql
       [(str osql " and imageID in ( " isql " )")
