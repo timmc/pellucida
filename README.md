@@ -1,6 +1,6 @@
 # pellucida
 
-A web gallery fed by kpawebgen.
+A web gallery fed by kpawebgen, written in Clojure.
 
 ## Usage
 
@@ -10,7 +10,7 @@ With Leiningen v2:
 PELL_CONFIG=path/to/config.clj lein run
 ```
 
-The config file is expected to look something like this:
+Configuration is in Clojure, and is expected to look something like this:
 
 ```clojure
 {:thumbs-link-base "/proxy-image/" ;; Proxy files from the local filesystem
