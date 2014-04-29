@@ -6,7 +6,7 @@
   :main ^:skip-aot org.timmc.pellucida
   :min-lein-version "2"
   :dependencies [[org.clojure/clojure "1.5.0"]
-                 [org.timmc/handy "1.4.0"]
+                 [org.timmc/handy "1.5.0"]
                  [compojure "1.1.3"]
                  [ring/ring-jetty-adapter "1.1.8"]
                  [ring-reload-modified "0.1.1"]

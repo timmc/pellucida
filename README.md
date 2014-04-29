@@ -17,6 +17,8 @@ Configuration is in Clojure, and is expected to look something like this:
  :thumbs-proxy-base "/home/timmc/photos/web/gen/"
  :gallery-db "/home/timmc/photos/web/kpawebgen.db3"
  ;; Optional keys
+ :gmaps-api-key "AB..." ;; Google Maps v2 API key
+ :btc-donate-addr "1..."
  :dev true
  :port 8080}
 ```

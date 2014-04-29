@@ -20,7 +20,13 @@ Include trailing slash."
     :validate (partial instance? Boolean)}
    :port
    {:doc "Port to serve website on. May be overriden at command line."
-    :validate (every-pred number? (complement neg?))}})
+    :validate (every-pred number? (complement neg?))}
+   :gmaps-api-key
+   {:doc "Google Maps v2 API key"
+    :validate string?}
+   :btc-donate-addr
+   {:doc "Bitcoin donation address"
+    :validate string?}})
 
 (def ^:internal known-keys
   (set/union (set (keys keys-required)) (set (keys keys-optional))))
