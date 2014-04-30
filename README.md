@@ -29,7 +29,7 @@ Keys are documented in `org.timmc.pellucida.settings`.
 
 ## License
 
-Copyright © 2012–2013 Tim McCormack, except for vendored items in
+Copyright © 2012–2014 Tim McCormack, except for vendored items in
 `./resources/public/vendor`.
 
 Distributed under the Eclipse Public License v1.0, the same as Clojure.
