@@ -26,6 +26,7 @@
 
 (defmulti qsc "Produce querystring component for a filter" :type)
 (defmethod qsc :tt [f]
+  ;; TODO use something that handles spaces correctly!
   (str "tt=" (URLEncoder/encode (:cat f)) "=" (URLEncoder/encode (:tag f))))
 
 ;;;; SQL emitting
