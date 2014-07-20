@@ -7,10 +7,15 @@
   vertical-align: middle;
 }
 
-.go-to-gallery {
+p.go-to-gallery {
   font-size: 3em;
   line-height: 2;
   vertical-align: middle;
   white-space: nowrap;
+  margin: 0;
+}
+
+p.go-to-tags {
+  margin: 0 0 0.5em;
 }
 

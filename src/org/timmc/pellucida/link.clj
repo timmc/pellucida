@@ -29,3 +29,7 @@
   [id which]
   {:pre [(integer? id), (#{:fullsize :solo :thumb} which)]}
   (format "%s%d.%s.jpg" (:thumbs-link-base settings/config) id (name which)))
+
+(defn tags "Tag cloud page"
+  []
+  "/tags")
