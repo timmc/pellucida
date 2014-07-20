@@ -28,8 +28,11 @@
                   [:a] (e/set-attr :href (ln/single (:imageID p)))
                   [:img] (e/set-attr :src (ln/photo (:imageID p) :thumb))))
 
-    [:.go-to-gallery]
-    (e/set-attr :href (ln/listing [] 0)))
+    [:.go-to-gallery :a]
+    (e/set-attr :href (ln/listing [] 0))
+
+    [:.go-to-tags :a]
+    (e/set-attr :href (ln/tags)))
 
    {:doc-title "Tim McCormack's photo gallery"
     :page-title "Tim McCormack's photo gallery"}))

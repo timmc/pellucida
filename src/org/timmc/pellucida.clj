@@ -9,6 +9,7 @@
                         (main :refer [main-routes])
                         (listing :refer [listing-routes])
                         (single :refer [single-routes])
+                        (tags :refer [tags-routes])
                         (proxy-images :refer [proxy-image-routes]))
    [ring.adapter.jetty :refer [run-jetty]]))
 
@@ -17,7 +18,8 @@
   #'main-routes
   #'proxy-image-routes
   #'listing-routes
-  #'single-routes)
+  #'single-routes
+  #'tags-routes)
 
 (defn dev-wrap
   [handler]
