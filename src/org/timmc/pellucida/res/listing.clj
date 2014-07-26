@@ -1,4 +1,4 @@
-(ns org.timmc.pellucida.listing
+(ns org.timmc.pellucida.res.listing
   "A tabular, filterable listing view showing thumbnails of many photos."
   (:require
    [org.timmc.handy :as handy]

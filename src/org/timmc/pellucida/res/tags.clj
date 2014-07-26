@@ -1,4 +1,4 @@
-(ns org.timmc.pellucida.tags
+(ns org.timmc.pellucida.res.tags
   "A tag cloud page."
   (:require
    [net.cgrand.enlive-html :as e]

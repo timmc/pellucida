@@ -1,4 +1,4 @@
-(ns org.timmc.pellucida.proxy-images
+(ns org.timmc.pellucida.res.proxy-images
   "Routes for proxying images from the filesystem in dev mode."
   (:require (org.timmc.pellucida (settings :as settings))
             [compojure.core :refer [defroutes GET]]))

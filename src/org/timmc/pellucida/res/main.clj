@@ -1,4 +1,4 @@
-(ns org.timmc.pellucida.main
+(ns org.timmc.pellucida.res.main
   "Main page. Maybe show a few photos."
   (:require
    [net.cgrand.enlive-html :as e]

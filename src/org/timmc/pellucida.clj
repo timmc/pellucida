@@ -5,12 +5,12 @@
    (compojure (route :as route)
               (handler :as handler)
               (core :refer [defroutes]))
-   (org.timmc.pellucida (settings :as settings)
-                        (main :refer [main-routes])
-                        (listing :refer [listing-routes])
-                        (single :refer [single-routes])
-                        (tags :refer [tags-routes])
-                        (proxy-images :refer [proxy-image-routes]))
+   (org.timmc.pellucida (settings :as settings))
+   (org.timmc.pellucida.res (main :refer [main-routes])
+                            (listing :refer [listing-routes])
+                            (single :refer [single-routes])
+                            (tags :refer [tags-routes])
+                            (proxy-images :refer [proxy-image-routes]))
    [ring.adapter.jetty :refer [run-jetty]]))
 
 (defroutes all-routes

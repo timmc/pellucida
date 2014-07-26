@@ -1,4 +1,4 @@
-(ns org.timmc.pellucida.single
+(ns org.timmc.pellucida.res.single
   "Showing just one photo."
   (:refer-clojure :exclude [if-let])
   (:require
