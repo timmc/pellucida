@@ -33,7 +33,6 @@ Keys are documented in `org.timmc.pellucida.settings`.
 - Add Drawbridge REPL (but nREPL needs a secure way to pass auth!)
 - Add base filter sets (gallery, v1-pub...)
 - Reorg source (routing namespaces all together?)
-- Tags page
 
 ## License
 
