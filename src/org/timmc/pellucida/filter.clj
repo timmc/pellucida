@@ -1,9 +1,8 @@
 (ns org.timmc.pellucida.filter
   "Filtering operations."
   (:require
-   (org.timmc.pellucida (util :as util))
-   [clojure.java.jdbc :as sql])
-  (:import (java.net URLEncoder)))
+   (org.timmc.pellucida (util :as u))
+   [clojure.java.jdbc :as sql]))
 
 ;; TODO: Enforce max number of filters?
 
@@ -16,7 +15,7 @@
   "Produce a collection of filters from a Ring request."
   [r]
   (filter (complement nil?)
-          (for [raw-tt (util/always-coll (get-in r [:query-params "tt"]))
+          (for [raw-tt (u/always-coll (get-in r [:query-params "tt"]))
                 :let [[cat tag] (.split raw-tt "=" 2)]]
             (if (not tag)
               (throw (RuntimeException. (str "Invalid tt filter: " raw-tt)))
@@ -26,8 +25,7 @@
 
 (defmulti qsc "Produce querystring component for a filter" :type)
 (defmethod qsc :tt [f]
-  ;; TODO use something that handles spaces correctly!
-  (str "tt=" (URLEncoder/encode (:cat f)) "=" (URLEncoder/encode (:tag f))))
+  (str "tt=" (u/enc-queryc (:cat f)) "=" (u/enc-queryc (:tag f))))
 
 ;;;; SQL emitting
 
