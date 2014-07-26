@@ -7,7 +7,7 @@
   "Assumes id is a numeric string and size is an allowable format."
   [filename]
   (when (re-matches #"[0-9]+\.(fullsize|solo|thumb)\.jpg" filename)
-    (let [f (java.io.File. (:thumbs-proxy-base settings/config) filename)]
+    (let [f (java.io.File. (:thumbs-proxy-base @settings/config) filename)]
       (when (.exists f) f))))
 
 (defroutes proxy-image-routes

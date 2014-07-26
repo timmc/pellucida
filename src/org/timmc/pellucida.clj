@@ -23,7 +23,7 @@
 
 (defn dev-wrap
   [handler]
-  (if (settings/config :dev)
+  (if (@settings/config :dev)
     (-> handler
         ;; dev-only middlewares
         (wrap-reload-modified ["src"]))
@@ -37,7 +37,7 @@
 (defn start-server
   "Start server. Call .stop on return value to stop server."
   [port]
-  (let [port (or port (settings/config :port) 3000)]
+  (let [port (or port (@settings/config :port) 3000)]
     (println "Running pellucida on port" port)
     (run-jetty #'app {:port port
                       :join? false})))

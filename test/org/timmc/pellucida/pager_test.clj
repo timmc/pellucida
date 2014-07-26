@@ -1,6 +1,6 @@
-(ns org.timmc.pellucida.listing-test
+(ns org.timmc.pellucida.pager-test
   (:use clojure.test
-        org.timmc.pellucida.listing))
+        org.timmc.pellucida.pager))
 
 (deftest paging
   (testing "normal usage"

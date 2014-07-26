@@ -102,7 +102,7 @@ string."
                        (pencode (:label im-data "Photo location")))
         img-src (format "http://maps.google.com/staticmap?size=300x300&markers=%s&maptype=hybrid&key=%s"
                         (pencode code)
-                        (pencode (cnf/config :gmaps-api-key)))]
+                        (pencode (@cnf/config :gmaps-api-key)))]
     (e/transformation
      [:.smd-block.geocode] (e/set-attr "data-geocode" code)
      [:a.gco-link] (e/set-attr "href" a-href)
@@ -111,7 +111,7 @@ string."
 
 (defn sidemod-libre
   []
-  (let [btc-addr (cnf/config :btc-donate-addr)]
+  (let [btc-addr (@cnf/config :btc-donate-addr)]
     (e/transformation
      [:.para-donate] (if btc-addr
                        (e/transformation
@@ -144,7 +144,7 @@ string."
            delete)
 
          [:.smd-block.geocode]
-         (if-let [_ (cnf/config :gmaps-api-key)
+         (if-let [_ (@cnf/config :gmaps-api-key)
                   _ (tag-match? tags [["Location" "geocode"]])
                   code (find-geocode tags)]
            (sidemod-geocode data code)

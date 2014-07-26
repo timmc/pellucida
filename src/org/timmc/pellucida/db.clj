@@ -50,7 +50,7 @@
   [& body]
   `(binding [sql/*as-key* str]
      (sql/with-connection
-       (assoc *db-spec* :subname (:gallery-db settings/config))
+       (assoc *db-spec* :subname (:gallery-db @settings/config))
        (check-version)
        ~@body)))
 

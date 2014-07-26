@@ -62,5 +62,6 @@ Include trailing slash."
       (validate (read-string (slurp cnf-path))))
     (throw (RuntimeException. "Missing PELL_CONFIG environment variable."))))
 
-(defonce ^{:doc ":thumbs-proxy-base, :thumbs-link-base, :gallery-db"}
-  config (load-config))
+(defonce ^{:doc "Delay: :thumbs-proxy-base, :thumbs-link-base, :gallery-db"}
+  config
+  (delay (load-config)))
