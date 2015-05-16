@@ -29,9 +29,13 @@ Keys are documented in `org.timmc.pellucida.settings`.
 
 ## TODO
 
+- Add base filter sets (gallery, v1-pub...) so we can host entire old
+  gallery along with newer filtered set. (Highest priority, allows
+  migration.)
+- Sort by creation chronology, image ID, or newest present in gallery
+  (last may not be possible, but is most interesting for an RSS feed)
 - Fetch new gallery DB on demand/regularly (use ephemeral filesystem)
 - Add Drawbridge REPL (but nREPL needs a secure way to pass auth!)
-- Add base filter sets (gallery, v1-pub...)
 
 ## License
 
