@@ -6,18 +6,25 @@
    (org.timmc.pellucida (db :as db)
                         (layout :as lay)
                         (mode :as m)
+                        (filter :as filter)
                         (link :as ln))
    [clojure.java.jdbc :as sql]))
 
 (defn pg [] (e/html-resource "org/timmc/pellucida/html/main.html"))
 
 (defn recent-photos
-  []
-  (db/read
-   (sql/with-query-results r
-     ;; TODO Apply mode filter
-     ["select * from image order by imageID desc limit 3"]
-     (doall r))))
+  [mode]
+  (let [filters (filter/apply-mode nil mode)
+        [fsql fparams] (reduce filter/sql-wrap nil filters)
+        sql (str "select * from image "
+                 (when fsql
+                   (str " where imageID in ( " fsql " ) "))
+                 " order by imageID desc limit 3")
+        params fparams]
+    (db/read
+     (sql/with-query-results r
+       (db/jdbc-psql [sql params])
+       (doall r)))))
 
 (defn main-page
   [mode]
@@ -25,7 +32,7 @@
    (pg)
    (e/transformation
     [:#teaser :.imglink]
-    (e/clone-for [p (recent-photos)]
+    (e/clone-for [p (recent-photos mode)]
                  (e/transformation
                   [:a] (e/set-attr :href (ln/single mode (:imageID p)))
                   [:img] (e/set-attr :src (ln/photo (:imageID p) :thumb))))
