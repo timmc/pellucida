@@ -27,8 +27,6 @@
        (db/jdbc-psql [sql params])
        (:cnt (first r))))))
 
-(def per-page 30)
-
 (defn recent-photos
   [pag filters]
   (let [[fsql fparams] (reduce filter/sql-wrap nil filters)
@@ -36,7 +34,7 @@
                  (when fsql
                    (str " where imageID in ( " fsql " ) "))
                  (format " order by imageID desc limit %d offset %d"
-                         per-page, (cast Long (:first-record pag))))
+                         (:per-page pag), (cast Long (:first-record pag))))
         params fparams]
     (db/read
      (sql/with-query-results r
@@ -55,6 +53,8 @@
    [:.ths-title] (e/content (:label p))
    [:img.ths-solo] (e/set-attr :src (ln/photo (:imageID p) :thumb))
    [:.ths-meta] (e/content (:added p))))
+
+(def per-page 30)
 
 (defn list-page "Render a listing of recent photos."
   [mode user-filters cur-page]

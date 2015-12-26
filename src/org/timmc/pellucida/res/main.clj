@@ -3,28 +3,22 @@
   (:require
    [net.cgrand.enlive-html :as e]
    [compojure.core :refer [defroutes GET]]
-   (org.timmc.pellucida (db :as db)
-                        (layout :as lay)
+   (org.timmc.pellucida (layout :as lay)
                         (mode :as m)
                         (filter :as filter)
                         (link :as ln))
-   [clojure.java.jdbc :as sql]))
+   [org.timmc.pellucida.res.listing :as listing]
+   [org.timmc.handy :as handy]))
 
 (defn pg [] (e/html-resource "org/timmc/pellucida/html/main.html"))
 
-(defn recent-photos
+(defn photos-teaser
+  "Produces a small listing of photos."
   [mode]
-  (let [filters (filter/apply-mode nil mode)
-        [fsql fparams] (reduce filter/sql-wrap nil filters)
-        sql (str "select * from image "
-                 (when fsql
-                   (str " where imageID in ( " fsql " ) "))
-                 " order by imageID desc limit 3")
-        params fparams]
-    (db/read
-     (sql/with-query-results r
-       (db/jdbc-psql [sql params])
-       (doall r)))))
+  (let [num 3
+        pagination (handy/paging num 0 num)
+        filters (filter/apply-mode nil mode)]
+    (listing/recent-photos pagination filters)))
 
 (defn main-page
   [mode]
@@ -32,7 +26,7 @@
    (pg)
    (e/transformation
     [:#teaser :.imglink]
-    (e/clone-for [p (recent-photos mode)]
+    (e/clone-for [p (photos-teaser mode)]
                  (e/transformation
                   [:a] (e/set-attr :href (ln/single mode (:imageID p)))
                   [:img] (e/set-attr :src (ln/photo (:imageID p) :thumb))))

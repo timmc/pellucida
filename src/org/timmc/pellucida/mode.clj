@@ -10,6 +10,11 @@
                :name "Gallery"
                :desc "Images more suitable for default display."
                :filters [{:type :tt, :cat "Meta", :tag "gallery"}]}
+              #_
+              {:shortcode "TEST"
+               :name "TESTING filter"
+               :desc "Just red images"
+               :filters [{:type :tt, :cat "Content", :tag "red"}]}
               {:shortcode "raw"
                :name "Raw public"
                :desc "Images more suitable for default display."
