@@ -1,29 +1,38 @@
 (ns org.timmc.pellucida.link
   "Building links to various parts of the application."
   (:require (org.timmc.pellucida (settings :as settings)
+                                 (util :as u)
+                                 (mode :as m)
                                  (filter :as filter))))
 
+;; TODO This is terrible, should take unencoded params
 (defn ^:internal build-pq
-  "Build URL string from a path and a coll of querystring component strings."
+  "Build URL string from a path and a coll of encoded query component strings."
   [path qscs]
   (if (seq qscs)
     (apply str path "?" (interpose "&" qscs))
     path))
 
 (defn main "Main page"
-  []
-  "/")
+  [mode]
+  (build-pq "/"
+            (m/qsc mode)))
 
 (defn listing "Photo listing with thumbnails."
-  [filters page]
+  [mode filters page]
   (let [filters (map filter/qsc filters)
         page (when-not (zero? page) [(format "page=%d" page)])]
-    (build-pq "/list" (concat filters page))))
+    (build-pq "/v2/list"
+              (concat (m/qsc mode)
+                      filters
+                      page))))
 
 (defn single "Single-image page."
-  [id]
+  [mode id]
   {:pre [(integer? id)]}
-  (format "/image/%d" id))
+  (build-pq
+   (format "/v2/image/%d" id)
+   (m/qsc mode)))
 
 (defn photo "Photo file itself."
   [id which]
@@ -31,5 +40,6 @@
   (format "%s%d.%s.jpg" (:thumbs-link-base @settings/config) id (name which)))
 
 (defn tags "Tag cloud page"
-  []
-  "/tags")
+  [mode]
+  (build-pq "/v2/tags"
+            (m/qsc mode)))

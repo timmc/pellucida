@@ -7,6 +7,7 @@
    (org.timmc.pellucida (db :as db)
                         (layout :as lay)
                         (link :as ln)
+                        (mode :as m)
                         (settings :as cnf))
    [org.timmc.handy :refer [if-let+] :rename {if-let+ if-let}]
    [clojure.java.jdbc :as sql]))
@@ -40,7 +41,7 @@
 ;;   select imageID from image where imageID > ? order by imageID asc limit 3;
 
 (defn tags-block
-  [tags]
+  [mode tags]
   (e/transformation
    [:group] (e/do->
              (e/clone-for
@@ -57,7 +58,7 @@
                          (let [filter {:type :tt
                                        :cat (:cat tag)
                                        :tag (:tag tag)}]
-                           (e/set-attr :href (ln/listing [filter] 0)))))))
+                           (e/set-attr :href (ln/listing mode [filter] 0)))))))
              e/unwrap)))
 
 (defn tag-match?
@@ -121,7 +122,7 @@ string."
                        delete))))
 
 (defn single-page "Render a page for a single photo."
-  [id]
+  [mode id]
   {:pre [(integer? id)]}
   (if-let [data (photo-data id)]
     (let [tags (get-tags id)]
@@ -135,7 +136,7 @@ string."
          [:.md-date] (e/content (str (:startDate data)))
          [:.md-angle] (e/content (str (:angle data)))
          [:.md-dim] (e/content (format "%d x %d" (:width data) (:height data)))
-         [:#tags] (tags-block tags)
+         [:#tags] (tags-block mode tags)
 
          [:.smd-block.unidentified]
          (if (tag-match? tags [["Meta" "unidentified"]
@@ -160,11 +161,14 @@ string."
            (sidemod-libre)
            delete))
         {:doc-title (:label data)
-         :page-title (:label data)})))
+         :page-title (:label data)
+         :mode mode})))
     {:status 404
      :headers {"Content-Type" "text/html"}
      :body "Image not found."}))
 
 (defroutes single-routes
-  (GET ["/image/:id", :id #"[0-9]+"]
-       [id] (single-page (Long/parseLong id))))
+  ;; TODO decode path component before regex checking. *sigh*
+  (GET ["/v2/image/:id", :id #"[0-9]+"] [id :as r]
+       (let [mode (m/from-request r)]
+         (single-page mode (Long/parseLong id)))))

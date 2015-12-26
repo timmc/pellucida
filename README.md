@@ -13,7 +13,7 @@ PELL_CONFIG=path/to/config.clj lein run
 Configuration is in Clojure, and is expected to look something like this:
 
 ```clojure
-{:thumbs-link-base "/proxy-image/" ;; Proxy files from the local filesystem
+{:thumbs-link-base "/v2/proxy-image/" ;; Proxy files from the local filesystem
  :thumbs-proxy-base "/home/timmc/photos/web/gen/"
  :gallery-db "/home/timmc/photos/web/kpawebgen.db3"
  ;; Optional keys

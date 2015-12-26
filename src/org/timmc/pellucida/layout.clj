@@ -1,6 +1,7 @@
 (ns org.timmc.pellucida.layout
-  "Standard page layotu and rendering."
-  (:require [net.cgrand.enlive-html :as e]))
+  "Standard page layout and rendering."
+  (:require [net.cgrand.enlive-html :as e]
+            (org.timmc.pellucida (link :as ln))))
 
 (defn std [] (e/html-resource "org/timmc/pellucida/html/standard.html"))
 
@@ -13,12 +14,14 @@
 a set of simple values to insert, produce a stanard layout node tree.
 
 * `pg-resource` must be an Enlive resource
+* `mode` is the page mode
 * `body-xform` is expected to be an e/transformation or compatible
-* `vals` is a map containing :doc-title, :page-title"
+* `vals` is a map containing :doc-title, :page-title, :mode"
   [pg-resource body-xform vals]
   (e/at (std)
         [:title] (e/content (:doc-title vals))
         [:head] (e/append (-> (e/select pg-resource [:head]) first e/unwrap))
+        [:.std-home :a] (e/set-attr :href (ln/main (:mode vals)))
         [:.std-ptitle] (e/content (:page-title vals))
         ;; Replace the contents of .std-body in the standard template with
         ;; the contents of the (transformed) .std-body from the page template.

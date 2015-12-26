@@ -5,6 +5,7 @@
    [compojure.core :refer [defroutes GET]]
    (org.timmc.pellucida (db :as db)
                         (layout :as lay)
+                        (mode :as m)
                         (link :as ln))
    [clojure.java.jdbc :as sql]))
 
@@ -39,35 +40,36 @@ text-sorted map of tag to count. [[category, {tag:count...}]...]."
 
 (defn one-tag
   "Transformation for a .tgc-tag node using a category, tag, and count."
-  [cat tag cnt]
+  [mode cat tag cnt]
   (let [filts [{:type :tt, :cat cat, :tag tag}]
         bracket (Math/max 0 (Math/min 7 (long (* 1.6 (Math/log cnt)))))]
     (e/transformation
      [:a.tgc-link] (e/do->
                     (e/content tag)
-                    (e/set-attr :href (ln/listing filts 0))
+                    (e/set-attr :href (ln/listing mode filts 0))
                     (e/set-attr :title (say-count cnt))
                     (e/add-class (str "bracket-" bracket))))))
 
 (defn one-cat
   "Transformation for a .tgc-cat node using a category name and a map
 of tags to counts."
-  [cat tags]
+  [mode cat tags]
   (e/transformation
    [:h2] (e/content cat)
    [:.tgc-tag] (e/clone-for [[tag cnt] tags]
-                            (one-tag cat tag cnt))))
+                            (one-tag mode cat tag cnt))))
 
 (defn tags-page "Render a listing of recent photos."
-  []
+  [mode]
   (let [bycat (tags-by-cat (tags-counted))]
     (lay/standard
      (pg)
      (e/transformation
       [:.tgc-bycat :.tgc-cat] (e/clone-for [[cat tags] bycat]
-                                           (one-cat cat tags)))
+                                           (one-cat mode cat tags)))
      {:doc-title "Tag cloud"
-      :page-title "Tags, weighted by usage"})))
+      :page-title "Tags, weighted by usage"
+      :mode mode})))
 
 (defn maybe-param
   [request param parse default]
@@ -76,5 +78,6 @@ of tags to counts."
     default))
 
 (defroutes tags-routes
-  (GET "/tags" [:as r]
-       (lay/render (tags-page))))
+  (GET "/v2/tags" r
+       (let [mode (m/from-request r)]
+         (lay/render (tags-page mode)))))
