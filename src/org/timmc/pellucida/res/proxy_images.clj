@@ -11,6 +11,6 @@
       (when (.exists f) f))))
 
 (defroutes proxy-image-routes
-  (GET ["/proxy-image/:filename"]
+  (GET ["/v2/proxy-image/:filename"]
        [filename]
        (find-image filename)))

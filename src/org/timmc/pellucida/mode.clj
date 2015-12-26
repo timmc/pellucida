@@ -1,0 +1,40 @@
+(ns org.timmc.pellucida.mode
+  "Support for different viewing modes."
+  (:require [org.timmc.pellucida.util :as u]))
+
+(def modes
+  "Map of shortcodes to maps of {:shortcode, :name, :desc, :filters}."
+  (into {}
+        (map (juxt :shortcode identity)
+             [{:shortcode "gal"
+               :name "Gallery"
+               :desc "Images more suitable for default display."
+               :filters [{:type :tt, :cat "Meta", :tag "gallery"}]}
+              #_
+              {:shortcode "TEST"
+               :name "TESTING filter"
+               :desc "Just red images"
+               :filters [{:type :tt, :cat "Content", :tag "red"}]}
+              {:shortcode "raw"
+               :name "Raw public"
+               :desc "Images more suitable for default display."
+               :filters []}])))
+
+(def default
+  "Shortcode for default mode."
+  "gal")
+
+(defn from-request
+  "Extract the mode object from the Ring request, or nil if not
+present or invalid."
+  [request]
+  (or (get modes (get-in request [:params :mode]))
+      (get modes default)))
+
+(defn qsc
+  "Given a mode object, produce a coll of encoded query-string
+components."
+  [mode]
+  (when (and mode
+             (not= (:shortcode mode) default))
+    [(str "mode=" (u/enc-queryc (:shortcode mode)))]))
