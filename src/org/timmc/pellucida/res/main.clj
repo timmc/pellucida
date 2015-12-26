@@ -15,6 +15,7 @@
   []
   (db/read
    (sql/with-query-results r
+     ;; TODO Apply mode filter
      ["select * from image order by imageID desc limit 3"]
      (doall r))))
 

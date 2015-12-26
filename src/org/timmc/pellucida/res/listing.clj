@@ -57,8 +57,9 @@
    [:.ths-meta] (e/content (:added p))))
 
 (defn list-page "Render a listing of recent photos."
-  [mode filters cur-page]
-  (let [pag (handy/paging (total-count filters) cur-page per-page)
+  [mode user-filters cur-page]
+  (let [filters (filter/apply-mode user-filters mode)
+        pag (handy/paging (total-count filters) cur-page per-page)
         photos (when (:cur-valid pag)
                  (recent-photos pag filters))
         pager-node (pager/build-pager pag (partial ln/listing mode filters))]

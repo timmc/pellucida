@@ -2,6 +2,7 @@
   "Filtering operations."
   (:require
    (org.timmc.pellucida (util :as u))
+   [clojure.set :as set]
    [clojure.java.jdbc :as sql]))
 
 ;; TODO: Enforce max number of filters?
@@ -12,7 +13,12 @@
 ;;;; Parsing
 
 (defn parse-request
-  "Produce a collection of filters from a Ring request."
+  "Produce a collection of filters from a Ring request. Each filter
+takes the form of a map of:
+
+- :type, one of: #{:tt}
+- :cat, a category name string
+- :tag, a tag name string"
   [r]
   (filter (complement nil?)
           (for [raw-tt (u/always-coll (get-in r [:query-params "tt"]))
@@ -20,6 +26,13 @@
             (if (not tag)
               (throw (RuntimeException. (str "Invalid tt filter: " raw-tt)))
               {:type :tt, :cat cat, :tag tag}))))
+
+(defn apply-mode
+  "Given a filter collection and a mode, produce the effective filter
+collection."
+  [filters mode]
+  (set/union (set filters)
+             (set (:filters mode))))
 
 ;;;; URL building
 

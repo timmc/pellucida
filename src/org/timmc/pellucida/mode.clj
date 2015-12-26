@@ -9,7 +9,7 @@
              [{:shortcode "gal"
                :name "Gallery"
                :desc "Images more suitable for default display."
-               :filters [["tt" "Meta" "gallery"]]}
+               :filters [{:type :tt, :cat "Meta", :tag "gallery"}]}
               {:shortcode "raw"
                :name "Raw public"
                :desc "Images more suitable for default display."
