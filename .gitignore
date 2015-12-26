@@ -2,3 +2,4 @@
 /checkouts
 /pom.xml
 /.lein-*
+/.nrepl-port
