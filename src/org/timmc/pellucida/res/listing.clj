@@ -52,9 +52,9 @@
    [:a.ths-goto] (e/set-attr :href (ln/single mode (:imageID p)))
    [:.ths-title] (e/content (:label p))
    [:img.ths-solo] (e/set-attr :src (ln/photo
-                                     (:filenameInvariant p)
+                                     (:basename p)
                                      (get-in @db/last-check
-                                             [:config "filenameVariants"])
+                                             [:config "sizeSuffixes"])
                                      :thumb))
    [:.ths-meta] (e/content (:added p))))
 

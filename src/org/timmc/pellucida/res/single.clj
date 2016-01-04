@@ -126,16 +126,16 @@ string."
   {:pre [(integer? id)]}
   (if-let [data (photo-data id)]
     (let [tags (get-tags id)
-          basename (:filenameInvariant data)
-          varnames (get-in @db/last-check [:config "filenameVariants"])]
+          basename (:basename data)
+          suffixes (get-in @db/last-check [:config "sizeSuffixes"])]
       (lay/render
        (lay/standard
         (pg)
         (e/transformation
          [:.view-fullsize] (e/set-attr :href
-                                       (ln/photo basename varnames :fullsize))
+                                       (ln/photo basename suffixes :fullsize))
          [:.view-fullsize :img] (e/set-attr :src
-                                            (ln/photo basename varnames :solo))
+                                            (ln/photo basename suffixes :solo))
          [:.description] (e/content (:description data))
          [:.md-date] (e/content (str (:startDate data)))
          [:.md-angle] (e/content (str (:angle data)))

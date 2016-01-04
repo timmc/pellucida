@@ -31,9 +31,9 @@
                  (e/transformation
                   [:a] (e/set-attr :href (ln/single mode (:imageID p)))
                   [:img] (e/set-attr :src (ln/photo
-                                           (:filenameInvariant p)
+                                           (:basename p)
                                            (get-in @db/last-check
-                                                   [:config "filenameVariants"])
+                                                   [:config "sizeSuffixes"])
                                            :thumb))))
 
     [:.go-to-gallery :a]
