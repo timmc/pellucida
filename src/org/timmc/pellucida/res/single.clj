@@ -125,13 +125,17 @@ string."
   [mode id]
   {:pre [(integer? id)]}
   (if-let [data (photo-data id)]
-    (let [tags (get-tags id)]
+    (let [tags (get-tags id)
+          basename (:filenameInvariant data)
+          varnames (get-in @db/last-check [:config "filenameVariants"])]
       (lay/render
        (lay/standard
         (pg)
         (e/transformation
-         [:.view-fullsize] (e/set-attr :href (ln/photo id :fullsize))
-         [:.view-fullsize :img] (e/set-attr :src (ln/photo id :solo))
+         [:.view-fullsize] (e/set-attr :href
+                                       (ln/photo basename varnames :fullsize))
+         [:.view-fullsize :img] (e/set-attr :src
+                                            (ln/photo basename varnames :solo))
          [:.description] (e/content (:description data))
          [:.md-date] (e/content (str (:startDate data)))
          [:.md-angle] (e/content (str (:angle data)))

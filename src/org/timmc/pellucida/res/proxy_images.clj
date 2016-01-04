@@ -6,7 +6,7 @@
 (defn ^:internal find-image
   "Assumes id is a numeric string and size is an allowable format."
   [filename]
-  (when (re-matches #"[0-9]+\.(fullsize|solo|thumb)\.jpg" filename)
+  (when (re-matches #"id_[0-9a-z_\-]{0,200}\.jpg" filename)
     (let [f (java.io.File. (:thumbs-proxy-base @settings/config) filename)]
       (when (.exists f) f))))
 

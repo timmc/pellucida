@@ -1,8 +1,10 @@
 (ns org.timmc.pellucida.db
   "Database helpers."
   (:refer-clojure :exclude (read))
-  (:require [org.timmc.pellucida.settings :as settings]
-            [clojure.java.jdbc :as sql]))
+  (:require [clojure.java.jdbc :as sql]
+            [clojure.string :as str]
+            [cheshire.core :as json]
+            [org.timmc.pellucida.settings :as settings]))
 
 ;;;; Connection spec
 
@@ -15,43 +17,84 @@
 ;;;; Version checking
 
 (def acceptable-gallery-versions
-  #{1})
+  #{2})
 
-(def last-check
-  "Results of last check."
-  (atom {:ts 0 :valid true :version nil}))
+(defonce
+  ^{:doc
+    "Results of last check. Includes:
+
+- :ts Long: timestamp of check (millis since UNIX epoch)
+- :errors Coll|nil: Empty if DB is in a usable state
+- :version Long: DB version
+- :consistent Boolean: True iff DB declares itself consistent
+- :config Data: Parsed configuration map from metadata table
+
+Config data includes:
+
+- filenameVariants: Map of image variant names to variant portions of
+  image filenames."}
+  last-check
+  (atom {:ts 0
+         :errors nil
+         :version nil
+         :consistent nil
+         :config nil}))
 
 (def min-check-interval
   "Minimum version check interval, in millis."
-  (* 1 60 1000))
+  (* 15 1000))
 
-(defn check-version
-  "Check version if we haven't checked recently."
+(defn interpret-db-status
+  [db-meta now]
+  (let [{:keys [version, consistent, config]} db-meta
+        ok-ver (contains? acceptable-gallery-versions version)
+        consistent? (= consistent 1)
+        config-parsed (try (json/parse-string config)
+                           (catch Exception e
+                             (println "Cannot parse DB stored config:" e)
+                             nil))
+        errors (seq
+                (concat (when-not ok-ver
+                          [(str "Unexpected DB version: " version)])
+                        (when-not consistent?
+                          ["DB not in consistent state"])
+                        (when-not config-parsed
+                          ["Could not parse DB's stored config"])))]
+    {:ts now, :errors errors,
+     :version version, :consistent consistent?, :config config-parsed}))
+
+(defn fetch-status
   []
-  (let [{:keys [ts valid version]} @last-check
-        now (System/currentTimeMillis)]
-    ;; Last check could be in future if clock has been changed. That's cool.
-    (if (< min-check-interval (Math/abs (- ts now)))
-      (let [cur-ver (sql/with-query-results r
-                      ["SELECT version FROM metadata"]
-                      (:version (first r)))]
-        (if (contains? acceptable-gallery-versions cur-ver)
-          (reset! last-check {:ts now :valid true :version cur-ver})
-          (do (reset! last-check {:ts now :valid false :version cur-ver})
-              (throw (RuntimeException.
-                      (str "Unexpected DB version, halting: " cur-ver))))))
-      (when-not valid
-        (throw (RuntimeException.
-                (str "Unexpected DB version on last check: " version)))))))
+  (sql/with-query-results r
+    ["SELECT * FROM metadata LIMIT 1"]
+    (first r)))
+
+(defn check-db
+  "Check DB validity status if we haven't checked recently."
+  []
+  (let [status @last-check
+        now (System/currentTimeMillis)
+        ;; Possibly update status (including our locally bound copy.)
+        ;; Last check could be in future if clock has been
+        ;; changed. That's cool.
+        {:keys [errors]}
+        (if (< (Math/abs (- (:ts status) now)) min-check-interval)
+          status
+          (reset! last-check (interpret-db-status (fetch-status) now)))]
+    (when-not (empty? errors)
+      (throw (RuntimeException.
+              (str "DB failed check: " (str/join "; " errors)))))))
 
 ;;;; --
 
 (defmacro read ;; TODO make connection read-only
+  "Run body inside a dynamic extent with a SQL connection. The value
+of #'last-check is usable from the body and after this macro is run."
   [& body]
   `(binding [sql/*as-key* str]
      (sql/with-connection
        (assoc *db-spec* :subname (:gallery-db @settings/config))
-       (check-version)
+       (check-db)
        ~@body)))
 
 (defn jdbc-psql
