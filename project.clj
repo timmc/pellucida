@@ -12,5 +12,7 @@
                  [ring-reload-modified "0.1.1"]
                  [org.xerial/sqlite-jdbc "3.7.2"]
                  [org.clojure/java.jdbc "0.2.3"]
-                 [enlive "1.1.6"]]
+                 [enlive "1.1.6"]
+                 [cheshire "5.5.0"]
+                 ]
   :plugins [[org.timmc/lein-otf "2.0.0"]])

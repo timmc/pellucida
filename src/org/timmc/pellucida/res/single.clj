@@ -125,13 +125,17 @@ string."
   [mode id]
   {:pre [(integer? id)]}
   (if-let [data (photo-data id)]
-    (let [tags (get-tags id)]
+    (let [tags (get-tags id)
+          basename (:basename data)
+          suffixes (get-in @db/last-check [:config "sizeSuffixes"])]
       (lay/render
        (lay/standard
         (pg)
         (e/transformation
-         [:.view-fullsize] (e/set-attr :href (ln/photo id :fullsize))
-         [:.view-fullsize :img] (e/set-attr :src (ln/photo id :solo))
+         [:.view-fullsize] (e/set-attr :href
+                                       (ln/photo basename suffixes :fullsize))
+         [:.view-fullsize :img] (e/set-attr :src
+                                            (ln/photo basename suffixes :solo))
          [:.description] (e/content (:description data))
          [:.md-date] (e/content (str (:startDate data)))
          [:.md-angle] (e/content (str (:angle data)))

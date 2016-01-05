@@ -35,9 +35,14 @@
    (m/qsc mode)))
 
 (defn photo "Photo file itself."
-  [id which]
-  {:pre [(integer? id), (#{:fullsize :solo :thumb} which)]}
-  (format "%s%d.%s.jpg" (:thumbs-link-base @settings/config) id (name which)))
+  [base-name suffixes which]
+  {:pre [(string? base-name)
+         (map? suffixes)
+         (#{:fullsize :solo :thumb} which)]}
+  (format "%s%s-%s.jpg"
+          (:thumbs-link-base @settings/config)
+          base-name
+          (get suffixes (name which))))
 
 (defn tags "Tag cloud page"
   [mode]

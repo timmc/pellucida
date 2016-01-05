@@ -3,7 +3,8 @@
   (:require
    [net.cgrand.enlive-html :as e]
    [compojure.core :refer [defroutes GET]]
-   (org.timmc.pellucida (layout :as lay)
+   (org.timmc.pellucida (db :as db)
+                        (layout :as lay)
                         (mode :as m)
                         (filter :as filter)
                         (link :as ln))
@@ -29,7 +30,11 @@
     (e/clone-for [p (photos-teaser mode)]
                  (e/transformation
                   [:a] (e/set-attr :href (ln/single mode (:imageID p)))
-                  [:img] (e/set-attr :src (ln/photo (:imageID p) :thumb))))
+                  [:img] (e/set-attr :src (ln/photo
+                                           (:basename p)
+                                           (get-in @db/last-check
+                                                   [:config "sizeSuffixes"])
+                                           :thumb))))
 
     [:.go-to-gallery :a]
     (e/set-attr :href (ln/listing mode [] 0))
