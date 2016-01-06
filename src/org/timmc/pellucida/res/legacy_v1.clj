@@ -80,5 +80,4 @@ if not found."
   (GET "/tags" r
        (redirect (ln/tags (m/modes "raw"))))
   (GET "/about/stats" r
-       ;; TODO
-       "new stats page not yet built"))
+       (redirect (ln/stats (m/modes "raw")))))

@@ -55,3 +55,8 @@ supports it (return input otherwise.)"
   [mode]
   (build-pq "/v2/tags"
             (m/qsc mode)))
+
+(defn stats "Image stats page"
+  [mode]
+  (build-pq "/v2/about/stats"
+            (m/qsc mode)))
