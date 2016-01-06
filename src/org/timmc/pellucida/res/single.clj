@@ -128,45 +128,44 @@ string."
     (let [tags (get-tags id)
           basename (:basename data)
           suffixes (get-in @db/last-check [:config "sizeSuffixes"])]
-      (lay/render
-       (lay/standard
-        (pg)
-        (e/transformation
-         [:.view-fullsize] (e/set-attr :href
-                                       (ln/photo basename suffixes :fullsize))
-         [:.view-fullsize :img] (e/set-attr :src
-                                            (ln/photo basename suffixes :solo))
-         [:.description] (e/content (:description data))
-         [:.md-date] (e/content (str (:startDate data)))
-         [:.md-angle] (e/content (str (:angle data)))
-         [:.md-dim] (e/content (format "%d x %d" (:width data) (:height data)))
-         [:#tags] (tags-block mode tags)
+      (lay/standard
+       (pg)
+       (e/transformation
+        [:.view-fullsize] (e/set-attr :href
+                                      (ln/photo basename suffixes :fullsize))
+        [:.view-fullsize :img] (e/set-attr :src
+                                           (ln/photo basename suffixes :solo))
+        [:.description] (e/content (:description data))
+        [:.md-date] (e/content (str (:startDate data)))
+        [:.md-angle] (e/content (str (:angle data)))
+        [:.md-dim] (e/content (format "%d x %d" (:width data) (:height data)))
+        [:#tags] (tags-block mode tags)
 
-         [:.smd-block.unidentified]
-         (if (tag-match? tags [["Meta" "unidentified"]
-                               ["Meta" "identification unsure"]])
-           no-op
-           delete)
+        [:.smd-block.unidentified]
+        (if (tag-match? tags [["Meta" "unidentified"]
+                              ["Meta" "identification unsure"]])
+          no-op
+          delete)
 
-         [:.smd-block.geocode]
-         (if-let [_ (@cnf/config :gmaps-api-key)
-                  _ (tag-match? tags [["Location" "geocode"]])
-                  code (find-geocode tags)]
-           (sidemod-geocode data code)
-           delete)
+        [:.smd-block.geocode]
+        (if-let [_ (@cnf/config :gmaps-api-key)
+                 _ (tag-match? tags [["Location" "geocode"]])
+                 code (find-geocode tags)]
+          (sidemod-geocode data code)
+          delete)
 
-         [:.smd-block.license.nonfree]
-         (if (tag-match? tags [["Meta" "free-licensed"]])
-           delete
-           no-op)
+        [:.smd-block.license.nonfree]
+        (if (tag-match? tags [["Meta" "free-licensed"]])
+          delete
+          no-op)
 
-         [:.smd-block.license.libre]
-         (if (tag-match? tags [["Meta" "free-licensed"]])
-           (sidemod-libre)
-           delete))
-        {:doc-title (:label data)
-         :page-title (:label data)
-         :mode mode})))
+        [:.smd-block.license.libre]
+        (if (tag-match? tags [["Meta" "free-licensed"]])
+          (sidemod-libre)
+          delete))
+       {:doc-title (:label data)
+        :page-title (:label data)
+        :mode mode}))
     {:status 404
      :headers {"Content-Type" "text/html"}
      :body "Image not found."}))
@@ -175,4 +174,4 @@ string."
   ;; TODO decode path component before regex checking. *sigh*
   (GET ["/v2/image/:id", :id #"[0-9]+"] [id :as r]
        (let [mode (m/from-request r)]
-         (single-page mode (Long/parseLong id)))))
+         (lay/render (single-page mode (Long/parseLong id))))))
