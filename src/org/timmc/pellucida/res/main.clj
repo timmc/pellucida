@@ -39,8 +39,11 @@
     [:.go-to-gallery :a]
     (e/set-attr :href (ln/listing mode [] 0))
 
-    [:.go-to-tags :a]
-    (e/set-attr :href (ln/tags mode)))
+    [:.mn-other-pages :a.mn-tags]
+    (e/set-attr :href (ln/tags mode))
+
+    [:.mn-other-pages :a.mn-stats]
+    (e/set-attr :href (ln/stats mode)))
 
    {:doc-title "Tim McCormack's photo gallery"
     :page-title "Tim McCormack's photo gallery"
