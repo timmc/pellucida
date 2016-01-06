@@ -66,7 +66,7 @@
         pag (handy/paging (total-count filters) cur-page per-page)
         photos (when (:cur-valid pag)
                  (recent-photos pag filters))
-        pager-node (pager/build-pager pag (partial ln/listing mode filters))]
+        pager-node (pager/build-pager pag #(ln/listing mode user-filters %))]
     (lay/standard
      (pg)
      (e/transformation
