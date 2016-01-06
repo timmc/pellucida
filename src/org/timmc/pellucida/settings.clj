@@ -6,21 +6,26 @@
    {:doc "Base URL for photo links, including trailing slash.
 To use the filesystem proxy, use /proxy-image/."
     :validate string?}
-   :thumbs-proxy-base
-   {:doc "Base path for images on filesystem, or nil if not proxying.
-Include trailing slash."
-    :validate #(or (string? %) (nil? %))}
+
    :gallery-db
    {:doc "Valid path to a SQLite3 database containing the gallery data."
-    :validate (every-pred string? #(.exists (java.io.File. %)))}})
+    :validate #(and (string? %)
+                    (.exists (java.io.File. %)))}})
 
 (def keys-optional
-  {:dev
-   {:doc "Turn on for auto-reloading and any other dev features."
-    :validate (partial instance? Boolean)}
-   :port
+  {:port
    {:doc "Port to serve website on. May be overriden at command line."
-    :validate (every-pred number? (complement neg?))}
+    :validate #(and (integer? %) (not (neg? %)))}
+
+   :dev
+   {:doc "Boolean: Turn on for auto-reloading and any other dev features."
+    :validate #(instance? Boolean %)}
+
+   :thumbs-proxy-base
+   {:doc (str "Base path for images on filesystem, if proxying."
+              " Include trailing slash.")
+    :validate string?}
+
    :gmaps-api-key
    {:doc "Google Maps v2 API key"
     :validate string?}
@@ -45,7 +50,7 @@ Include trailing slash."
                       rk (:doc rv))))))
   ;; validate optional keys
   (doseq [[ok ov] keys-optional]
-    (when-let [[_ cv] (find cnf ok)]
+    (when-let [cv (get cnf ok)] ;; allow nil values
       (when-not ((:validate ov) cv)
         (throw (RuntimeException.
                 (format "ERROR: Bad value for config key %s.\nDoc: %s"
