@@ -10,7 +10,8 @@
                             (listing :refer [listing-routes])
                             (single :refer [single-routes])
                             (tags :refer [tags-routes])
-                            (proxy-images :refer [proxy-image-routes]))
+                            (proxy-images :refer [proxy-image-routes])
+                            (legacy-v1 :refer [legacy-v1-routes]))
    [ring.adapter.jetty :refer [run-jetty]]))
 
 (defroutes all-routes
@@ -19,7 +20,8 @@
   #'proxy-image-routes
   #'listing-routes
   #'single-routes
-  #'tags-routes)
+  #'tags-routes
+  #'legacy-v1-routes)
 
 (defn dev-wrap
   [handler]
