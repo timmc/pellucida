@@ -16,7 +16,7 @@ redirects."
   "Extract a map of :filters and :page from a v1 filter page's
 querystring."
   [^String qs]
-  (loop [kvs (.split qs "&")
+  (loop [kvs (.split (or qs "") "&")
          filters []
          page 0]
     (if (empty? kvs)
@@ -66,7 +66,7 @@ if not found."
        (redirect (ln/listing (m/modes "raw") [] 0)))
   (GET "/filter/run" r
        (let [{:keys [filters page]} (extract-filter-info (:query-string r))]
-         (redirect (ln/listing (m/modes "raw") [] 0
+         (redirect (ln/listing (m/modes "raw")
                                filters
                                page))))
   (GET ["/view/:md5"] [md5 :as r]
