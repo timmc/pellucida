@@ -17,6 +17,10 @@ To use the filesystem proxy, use /proxy-image/."
    {:doc "Port to serve website on. May be overriden at command line."
     :validate #(and (integer? %) (not (neg? %)))}
 
+   :base-url
+   {:doc "Base URL for website, not ending in trailing slash."
+    :validate string?}
+
    :dev
    {:doc "Boolean: Turn on for auto-reloading and any other dev features."
     :validate #(instance? Boolean %)}
@@ -29,6 +33,7 @@ To use the filesystem proxy, use /proxy-image/."
    :gmaps-api-key
    {:doc "Google Maps v2 API key"
     :validate string?}
+
    :btc-donate-addr
    {:doc "Bitcoin donation address"
     :validate string?}})

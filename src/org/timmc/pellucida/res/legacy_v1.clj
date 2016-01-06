@@ -54,10 +54,12 @@ if not found."
      (:imageID (first r)))))
 
 (defn redirect
-  "Return ring 302 redirect to URL."
-  [url]
+  "Return ring 302 redirect to given path."
+  [path]
   {:status 302
-   :headers {"Location" url
+   ;; Use absolute URLs because old site may have been HTTP instead of
+   ;; HTTPS or vice versa, or may have had a different domain name.
+   :headers {"Location" (ln/abs path)
              "Content-Type" "text/plain; charset=UTF-8"}
    :body "Redirecting to v2 website URL..."})
 

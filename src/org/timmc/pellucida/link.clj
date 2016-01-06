@@ -1,5 +1,6 @@
 (ns org.timmc.pellucida.link
-  "Building links to various parts of the application."
+  "Builds URLs to various parts of the application. URLs are absolute
+paths unless otherwise indicated."
   (:require (org.timmc.pellucida (settings :as settings)
                                  (util :as u)
                                  (mode :as m)
@@ -12,6 +13,12 @@
   (if (seq qscs)
     (apply str path "?" (interpose "&" qscs))
     path))
+
+(defn abs
+  "Turn absolute path reference into absolute URL, if configuration
+supports it (return input otherwise.)"
+  [path]
+  (str (:base-url @settings/config) path))
 
 (defn main "Main page"
   [mode]
