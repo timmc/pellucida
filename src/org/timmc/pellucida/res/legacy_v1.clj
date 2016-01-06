@@ -76,7 +76,8 @@ if not found."
          (redirect (ln/single (m/modes "raw") id))
          {:status 404
           :headers {"Content-Type" "text/html; charset=UTF-8"}
-          :body "Image from old gallery not found"})) ;; TODO
+          ;; TODO
+          :body "Image from old gallery not found"}))
   (GET "/tags" r
        (redirect (ln/tags (m/modes "raw"))))
   (GET "/about/stats" r
