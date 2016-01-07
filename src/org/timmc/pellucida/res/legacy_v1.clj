@@ -53,6 +53,31 @@ if not found."
      ["SELECT imageID FROM image WHERE md5 = ? LIMIT 1" md5]
      (:imageID (first r)))))
 
+(def image-404-pg
+  (e/html-resource "org/timmc/pellucida/html/legacy-v1-image-not-found.html"))
+
+(defn email-about
+  "Construct a mailto email link re: a missing image by md5 hash."
+  [md5]
+  (str "mailto:site-gallery-404@brainonfire.net"
+       "?subject="
+       (u/enc-queryc
+        (str "Missing image on gallery: " md5))
+       "&body="
+       (u/enc-queryc
+        "Could you please see about retrieving this image? Thanks!")))
+
+(defn image-not-found-page
+  "Return page for a not-found image with the given MD5 hash."
+  [md5]
+  (lay/standard
+   image-404-pg
+   (e/transformation
+    [:a.inf-email] (e/set-attr :href (email-about md5)))
+   {:doc-title (str "Image not found: " md5)
+    :page-title "Image not found"
+    :mode (m/modes "raw")}))
+
 (defn redirect
   "Return ring 302 redirect to given path."
   [path]
@@ -76,8 +101,7 @@ if not found."
          (redirect (ln/single (m/modes "raw") id))
          {:status 404
           :headers {"Content-Type" "text/html; charset=UTF-8"}
-          ;; TODO
-          :body "Image from old gallery not found"}))
+          :body (lay/render (image-not-found-page md5))}))
   (GET "/tags" r
        (redirect (ln/tags (m/modes "raw"))))
   (GET "/about/stats" r
