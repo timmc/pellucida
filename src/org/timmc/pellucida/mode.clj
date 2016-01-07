@@ -7,8 +7,8 @@
   (into {}
         (map (juxt :shortcode identity)
              [{:shortcode "gal"
-               :name "Gallery"
-               :desc "Images more suitable for default display."
+               :name "gallery"
+               :desc "images more suitable for default display"
                :filters [{:type :tt, :cat "Meta", :tag "gallery"}]}
               #_
               {:shortcode "TEST"
@@ -16,8 +16,10 @@
                :desc "Just red images"
                :filters [{:type :tt, :cat "Content", :tag "red"}]}
               {:shortcode "raw"
-               :name "Raw public"
-               :desc "Images more suitable for default display."
+               :name "raw public"
+               :desc (str "all public images, including near-duplicates,"
+                          " low-quality images, and images included only"
+                          " for aiding identification")
                :filters []}])))
 
 (def default
