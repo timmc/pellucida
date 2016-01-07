@@ -1,7 +1,8 @@
 (ns org.timmc.pellucida.layout
   "Standard page layout and rendering."
   (:require [net.cgrand.enlive-html :as e]
-            (org.timmc.pellucida (link :as ln))))
+            (org.timmc.pellucida (link :as ln)
+                                 (mode :as m))))
 
 (def std (e/html-resource "org/timmc/pellucida/html/standard.html"))
 
@@ -23,6 +24,13 @@ a set of simple values to insert, produce a stanard layout node tree.
         [:head] (e/append (-> (e/select pg-resource [:head]) first e/unwrap))
         [:.std-home :a] (e/set-attr :href (ln/main (:mode vals)))
         [:.std-ptitle] (e/content (:page-title vals))
+        [:.std-mode] (when-not (= (:shortcode (:mode vals)) m/default)
+                       (e/transformation
+                        [:.mde-name] (e/content (:name (:mode vals)))
+                        [:.mde-desc] (e/content (:desc (:mode vals)))
+                        [:.mde-go-default] (e/set-attr :href
+                                                       ;; TODO, requires access to querystring
+                                                       )))
         ;; Replace the contents of .std-body in the standard template with
         ;; the contents of the (transformed) .std-body from the page template.
         [:.std-body] (e/substitute
