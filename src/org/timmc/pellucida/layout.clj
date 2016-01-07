@@ -3,7 +3,7 @@
   (:require [net.cgrand.enlive-html :as e]
             (org.timmc.pellucida (link :as ln))))
 
-(defn std [] (e/html-resource "org/timmc/pellucida/html/standard.html"))
+(def std (e/html-resource "org/timmc/pellucida/html/standard.html"))
 
 (defn render "Render an enlive dom as an HTML string."
   [dom]
@@ -18,7 +18,7 @@ a set of simple values to insert, produce a stanard layout node tree.
 * `body-xform` is expected to be an e/transformation or compatible
 * `vals` is a map containing :doc-title, :page-title, :mode"
   [pg-resource body-xform vals]
-  (e/at (std)
+  (e/at std
         [:title] (e/content (:doc-title vals))
         [:head] (e/append (-> (e/select pg-resource [:head]) first e/unwrap))
         [:.std-home :a] (e/set-attr :href (ln/main (:mode vals)))

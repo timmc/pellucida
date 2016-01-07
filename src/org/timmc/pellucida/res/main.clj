@@ -11,7 +11,7 @@
    [org.timmc.pellucida.res.listing :as listing]
    [org.timmc.handy :as handy]))
 
-(defn pg [] (e/html-resource "org/timmc/pellucida/html/main.html"))
+(def pg (e/html-resource "org/timmc/pellucida/html/main.html"))
 
 (defn photos-teaser
   "Produces a small listing of photos."
@@ -24,7 +24,7 @@
 (defn main-page
   [mode]
   (lay/standard
-   (pg)
+   pg
    (e/transformation
     [:#teaser :.imglink]
     (e/clone-for [p (photos-teaser mode)]

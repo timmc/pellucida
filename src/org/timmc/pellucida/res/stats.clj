@@ -31,13 +31,13 @@
         [(date-sql "DESC")]
         (:date (first r)))})))
 
-(defn pg [] (e/html-resource "org/timmc/pellucida/html/stats.html"))
+(def pg (e/html-resource "org/timmc/pellucida/html/stats.html"))
 
 (defn stats-page
   [mode]
   (let [data (stats-data)]
     (lay/standard
-     (pg)
+     pg
      (e/transformation
       [:.sts-count] (e/content (str (:count data)))
       [:.sts-earliest] (e/content (:earliest data))

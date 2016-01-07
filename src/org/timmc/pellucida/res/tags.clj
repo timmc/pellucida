@@ -32,7 +32,7 @@ text-sorted map of tag to count. [[category, {tag:count...}]...]."
 
 ;;;; html
 
-(defn pg [] (e/html-resource "org/timmc/pellucida/html/tags.html"))
+(def pg (e/html-resource "org/timmc/pellucida/html/tags.html"))
 
 (defn say-count
   [cnt]
@@ -63,7 +63,7 @@ of tags to counts."
   [mode]
   (let [bycat (tags-by-cat (tags-counted))]
     (lay/standard
-     (pg)
+     pg
      (e/transformation
       [:.tgc-bycat :.tgc-cat] (e/clone-for [[cat tags] bycat]
                                            (one-cat mode cat tags)))

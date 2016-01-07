@@ -43,7 +43,7 @@
 
 ;;;; html
 
-(defn pg [] (e/html-resource "org/timmc/pellucida/html/listing.html"))
+(def pg (e/html-resource "org/timmc/pellucida/html/listing.html"))
 
 (defn ths-one "Transformation for a .ths-one node using a photo record."
   [mode p]
@@ -68,7 +68,7 @@
                  (recent-photos pag filters))
         pager-node (pager/build-pager pag #(ln/listing mode user-filters %))]
     (lay/standard
-     (pg)
+     pg
      (e/transformation
       ;; TODO: Better out-of-bounds and no-results pages
       [:.ths-container :.ths-one] (e/clone-for [p photos]

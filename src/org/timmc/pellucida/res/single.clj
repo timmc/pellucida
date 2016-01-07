@@ -32,7 +32,7 @@
        order by cat asc, tag asc" id]
      (doall r))))
 
-(defn pg [] (e/html-resource "org/timmc/pellucida/html/single.html"))
+(def pg (e/html-resource "org/timmc/pellucida/html/single.html"))
 
 ;; TODO:
 ;; Previous 3 images:
@@ -130,7 +130,7 @@ string."
           suffixes (get-in @db/last-check [:config "sizeSuffixes"])]
       (lay/render
        (lay/standard
-        (pg)
+        pg
         (e/transformation
          [:.view-fullsize] (e/set-attr :href
                                        (ln/photo basename suffixes :fullsize))
