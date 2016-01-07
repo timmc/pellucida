@@ -58,6 +58,15 @@
                                      :thumb))
    [:.ths-meta] (e/content (:added p))))
 
+(defn filter-one "Transformation for a filter in the filterbox."
+  [mode user-filters page f]
+  (e/transformation
+   [:.fbx-describe] (e/content (filter/nat-lang f))
+   [:.fbx-remove] (e/set-attr :href
+                              (ln/listing mode
+                                          (remove #(= % f) user-filters)
+                                          page))))
+
 (def per-page 30)
 
 (defn list-page "Render a listing of recent photos."
@@ -70,6 +79,11 @@
     (lay/standard
      pg
      (e/transformation
+      ;; Delete the existing-filters part if no user filters applied.
+      [:.fbx-existing] (when (seq user-filters) identity)
+      [:.fbx-existing :ul :li] (e/clone-for [f user-filters]
+                                 (filter-one mode user-filters cur-page f))
+      [:.fbx-tags-link] (e/set-attr :href (ln/tags mode))
       ;; TODO: Better out-of-bounds and no-results pages
       [:.ths-container :.ths-one] (e/clone-for [p photos]
                                                (ths-one mode p))

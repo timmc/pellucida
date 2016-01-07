@@ -40,6 +40,13 @@ collection."
 (defmethod qsc :tt [f]
   (str "tt=" (u/enc-queryc (:cat f)) "=" (u/enc-queryc (:tag f))))
 
+;;;; Descriptions
+
+(defmulti nat-lang "Natural language description of filter" :type)
+(defmethod nat-lang :tt [f]
+  (format "Tagged with \"%s: %s\" or a subtag"
+          (:cat f) (:tag f)))
+
 ;;;; SQL emitting
 
 (defmulti sql-wrap
