@@ -105,3 +105,6 @@
              filters (filter/parse-request r)
              page (maybe-param r :page #(Integer/parseInt %) 0)]
          (lay/render (list-page mode filters page)))))
+
+;; TODO:
+;; - canonical link removing mode, filters
