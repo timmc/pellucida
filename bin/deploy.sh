@@ -1,5 +1,7 @@
 #!/bin/bash
 
+cd -- "$(dirname "${BASH_SOURCE[0]}")/.."
+
 APP=pellucida
 
 # Create a tarball
