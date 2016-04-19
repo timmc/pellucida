@@ -27,7 +27,7 @@
 
 (defn dev-wrap
   [handler]
-  (if (@settings/config :dev) ;; FIXME Derefs config at compile time
+  (if (settings/dev-mode?)
     (-> handler
         ;; dev-only middlewares
         (wrap-reload-modified ["src"]))

@@ -21,10 +21,6 @@ To use the filesystem proxy, use /proxy-image/."
    {:doc "Base URL for website, not ending in trailing slash."
     :validate string?}
 
-   :dev
-   {:doc "Boolean: Turn on for auto-reloading and any other dev features."
-    :validate #(instance? Boolean %)}
-
    :thumbs-proxy-base
    {:doc (str "Base path for images on filesystem, if proxying."
               " Include trailing slash.")
@@ -75,3 +71,13 @@ To use the filesystem proxy, use /proxy-image/."
 (defonce ^{:doc "Delay: :thumbs-proxy-base, :thumbs-link-base, :gallery-db"}
   config
   (delay (load-config)))
+
+(defn dev-mode?
+  "Return true if running in dev mode.
+
+This checks an environment variable instead of a config setting to
+avoid a compilation problem -- we need to know whether we're in dev
+mode in the main ns's app declaration, but we don't want to read a
+config file at compile time."
+  []
+  (= (System/getenv "PELL_DEV") "true"))

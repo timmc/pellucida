@@ -7,7 +7,7 @@ A web gallery fed by kpawebgen, written in Clojure.
 With Leiningen v2:
 
 ```clojure
-PELL_CONFIG=path/to/config.clj lein run
+PELL_CONFIG=path/to/config.clj PELL_DEV=true lein run
 ```
 
 Configuration is in Clojure, and is expected to look something like this:
@@ -19,13 +19,14 @@ Configuration is in Clojure, and is expected to look something like this:
  ;; Optional keys
  :gmaps-api-key "AB..." ;; Google Maps v2 API key
  :btc-donate-addr "1..."
- :dev true
  :port 8080}
 ```
 
 Requires a kpawebgen gallery DB version 1.
 
 Keys are documented in `org.timmc.pellucida.settings`.
+
+`PELL_DEV=true` enables automatic code reloading.
 
 ## TODO
 
