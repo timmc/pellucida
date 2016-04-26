@@ -102,5 +102,10 @@ if not found."
           :body (lay/render (image-not-found-page md5))}))
   (GET "/tags" r
        (redirect (ln/tags (m/modes "raw"))))
+  (GET "/about/technical" r
+       (assoc (redirect (ln/main (m/modes "raw")))
+         ;; Always 302 for this redirect, at least until/unless I put
+         ;; up a matching page to redirect to.
+         :status 302))
   (GET "/about/stats" r
        (redirect (ln/stats (m/modes "raw")))))
