@@ -1,7 +1,6 @@
 (ns org.timmc.pellucida.res.stats
   "Page with statistics on images in DB."
   (:require
-   [clojure.java.jdbc :as sql]
    [compojure.core :refer [defroutes GET]]
    [net.cgrand.enlive-html :as e]
    (org.timmc.pellucida (db :as db)
@@ -15,21 +14,14 @@
                                " ORDER BY startDate %s"
                                " LIMIT 1")
                           %)]
-    (db/read
-     {:count
-      (sql/with-query-results r
-        ["SELECT count(imageID) as cnt FROM image"]
-        (:cnt (first r)))
+    {:count
+     (:cnt (first (db/read ["SELECT count(imageID) as cnt FROM image"])))
 
-      :earliest
-      (sql/with-query-results r
-        [(date-sql "ASC")]
-        (:date (first r)))
+     :earliest
+     (:date (first (db/read [(date-sql "ASC")])))
 
-      :latest
-      (sql/with-query-results r
-        [(date-sql "DESC")]
-        (:date (first r)))})))
+     :latest
+     (:date (first (db/read [(date-sql "DESC")])))}))
 
 (def pg (e/html-resource "org/timmc/pellucida/html/stats.html"))
 

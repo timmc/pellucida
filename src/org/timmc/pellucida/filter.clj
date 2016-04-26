@@ -2,8 +2,7 @@
   "Filtering operations."
   (:require
    (org.timmc.pellucida (util :as u))
-   [clojure.set :as set]
-   [clojure.java.jdbc :as sql]))
+   [clojure.set :as set]))
 
 ;; TODO: Enforce max number of filters?
 

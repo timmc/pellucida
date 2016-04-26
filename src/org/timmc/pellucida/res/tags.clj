@@ -6,21 +6,17 @@
    (org.timmc.pellucida (db :as db)
                         (layout :as lay)
                         (mode :as m)
-                        (link :as ln))
-   [clojure.java.jdbc :as sql]))
+                        (link :as ln))))
 
 ;;;; data
 
 (defn tags-counted
   "Yield table of :cat, :tag, :count."
   []
-  (let [sql "select cat, tag, count(imageID) as count
-             from imagetags
-             group by cat, tag"]
-    (db/read
-     (sql/with-query-results r
-       (db/jdbc-psql [sql])
-       (doall r)))))
+  (db/read
+   (db/jdbc-psql ["select cat, tag, count(imageID) as count
+                  from imagetags
+                  group by cat, tag"])))
 
 (defn tags-by-cat
   "Given counted tags data from DB, yield seq of pairs of category and

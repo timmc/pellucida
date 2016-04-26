@@ -9,28 +9,22 @@
                         (link :as ln)
                         (mode :as m)
                         (settings :as cnf))
-   [org.timmc.handy :refer [if-let+] :rename {if-let+ if-let}]
-   [clojure.java.jdbc :as sql]))
+   [org.timmc.handy :refer [if-let+] :rename {if-let+ if-let}]))
 
 (defn photo-data
   [id]
   {:pre [(integer? id)]}
-  (db/read
-   (sql/with-query-results r
-     ["SELECT * FROM image WHERE imageID = ?" id]
-     (first r))))
+  (first (db/read ["SELECT * FROM image WHERE imageID = ?" id])))
 
 (defn get-tags
   "Yield a coll of maps :cat, :tag, :implicit for an image by ID."
   [id]
   {:pre [(integer? id)]}
   (db/read
-   (sql/with-query-results r
-     ["select cat, tag, implicit
-       from imagetags
-       where imageID = ?
-       order by cat asc, tag asc" id]
-     (doall r))))
+   ["select cat, tag, implicit
+     from imagetags
+     where imageID = ?
+     order by cat asc, tag asc" id]))
 
 (def pg (e/html-resource "org/timmc/pellucida/html/single.html"))
 

@@ -2,7 +2,6 @@
   "Legacy routes for version 1 of the gallery. Most of these form
 redirects."
   (:require
-   [clojure.java.jdbc :as sql]
    [compojure.core :refer [defroutes GET]]
    [net.cgrand.enlive-html :as e]
    (org.timmc.pellucida (db :as db)
@@ -48,10 +47,9 @@ querystring."
   "Given a supposed MD5 hash of an image, return the image ID or nil
 if not found."
   [md5]
-  (db/read
-   (sql/with-query-results r
-     ["SELECT imageID FROM image WHERE md5 = ? LIMIT 1" md5]
-     (:imageID (first r)))))
+  (-> (db/read ["SELECT imageID FROM image WHERE md5 = ? LIMIT 1" md5])
+      first
+      :imageID))
 
 (def image-404-pg
   (e/html-resource "org/timmc/pellucida/html/legacy-v1-image-not-found.html"))

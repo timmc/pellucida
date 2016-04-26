@@ -40,6 +40,12 @@ Config data includes:
          :consistent nil
          :config nil}))
 
+(def std-query-opts
+  "Standard options for sql/query.
+
+- Don't casefold column names"
+  {:identifiers str})
+
 (def min-check-interval
   "Minimum version check interval, in millis."
   (* 15 1000))
@@ -64,14 +70,13 @@ Config data includes:
      :version version, :consistent consistent?, :config config-parsed}))
 
 (defn fetch-status
-  []
-  (sql/with-query-results r
-    ["SELECT * FROM metadata LIMIT 1"]
-    (first r)))
+  [db-con]
+  (first
+   (sql/query db-con ["SELECT * FROM metadata LIMIT 1"] std-query-opts)))
 
 (defn check-db
   "Check DB validity status if we haven't checked recently."
-  []
+  [db-con]
   (let [status @last-check
         now (System/currentTimeMillis)
         ;; Possibly update status (including our locally bound copy.)
@@ -80,22 +85,22 @@ Config data includes:
         {:keys [errors]}
         (if (< (Math/abs (- (:ts status) now)) min-check-interval)
           status
-          (reset! last-check (interpret-db-status (fetch-status) now)))]
+          (reset! last-check (interpret-db-status (fetch-status db-con) now)))]
     (when-not (empty? errors)
       (throw (RuntimeException.
               (str "DB failed check: " (str/join "; " errors)))))))
 
 ;;;; --
 
-(defmacro read ;; TODO make connection read-only
-  "Run body inside a dynamic extent with a SQL connection. The value
-of #'last-check is usable from the body and after this macro is run."
-  [& body]
-  `(binding [sql/*as-key* str]
-     (sql/with-connection
-       (assoc *db-spec* :subname (:gallery-db @settings/config))
-       (check-db)
-       ~@body)))
+(defn read ;; TODO make connection read-only
+  "Query DB with SQL params (vector of paramaterized query +
+parameters) and yield a realized result collection. The value of
+#'last-check is usable after this function completes."
+  [sql-params]
+  (sql/with-db-connection
+    [db-con (assoc *db-spec* :subname (:gallery-db @settings/config))]
+    (check-db db-con)
+    (sql/query db-con sql-params std-query-opts)))
 
 (defn jdbc-psql
   "Format parameterized SQL + params for JDBC.

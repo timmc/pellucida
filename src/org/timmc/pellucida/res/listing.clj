@@ -9,8 +9,7 @@
                         (pager :as pager)
                         (mode :as m)
                         (filter :as filter)
-                        (link :as ln))
-   [clojure.java.jdbc :as sql]))
+                        (link :as ln))))
 
 ;;;; data
 
@@ -22,10 +21,9 @@
                    (str "( " fsql " )")
                    "image"))
         params fparams]
-    (db/read
-     (sql/with-query-results r
-       (db/jdbc-psql [sql params])
-       (:cnt (first r))))))
+    (-> (db/read (db/jdbc-psql [sql params]))
+        first
+        :cnt)))
 
 (defn recent-photos
   [pag filters]
@@ -36,10 +34,7 @@
                  (format " order by imageID desc limit %d offset %d"
                          (:per-page pag), (cast Long (:first-record pag))))
         params fparams]
-    (db/read
-     (sql/with-query-results r
-       (db/jdbc-psql [sql params])
-       (doall r)))))
+    (db/read (db/jdbc-psql [sql params]))))
 
 ;;;; html
 
