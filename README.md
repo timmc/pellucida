@@ -30,7 +30,9 @@ Keys are documented in `org.timmc.pellucida.settings`.
 
 ## TODO
 
-- Fix bug in pellucida or kpawebgen that is losing geocode tags
+- Bugfixes:
+    - Something in pellucida or kpawebgen is losing geocode tags
+    - Double-slash on legacy-v1 redirect from unfiltered is causing 404
 - Add base filter sets (gallery, v1-pub...) so we can host entire old
   gallery along with newer filtered set. (Highest priority, allows
   migration.)
