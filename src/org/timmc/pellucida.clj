@@ -1,7 +1,7 @@
 (ns org.timmc.pellucida
   "PELL_CONFIG=path/to/config.clj lein ring server-headless"
   (:require
-   [ring.middleware.reload-modified :refer [wrap-reload-modified]]
+   ring.middleware.reload-modified
    (compojure (route :as route)
               (handler :as handler)
               (core :refer [defroutes]))
@@ -15,6 +15,24 @@
                             (stats :refer [stats-routes]))
    [ring.adapter.jetty :refer [run-jetty]]))
 
+(def reloadable-src-dirs
+  ["src"])
+
+(defn wrap-reload-modified
+  "Runtime configurable wrapper for ring's wrap-reload-modified"
+  [handler]
+  ;; Don't even chain with the reloader middleware, just give it a
+  ;; fake handler now and a fake request when we want to reload.
+  ;; TODO: This is a terrible hack, maybe just replicate the reloading
+  ;; logic myself later.
+  (let [reloader (ring.middleware.reload-modified/wrap-reload-modified
+                  identity
+                  reloadable-src-dirs)]
+    (fn wrap-reload-shim-inner [request]
+      (when (settings/dev-mode?)
+        (reloader nil))
+      (handler request))))
+
 (defroutes all-routes
   (route/resources "/" {:root "public"})
   #'main-routes
@@ -25,18 +43,10 @@
   #'legacy-v1-routes
   #'stats-routes)
 
-(defn dev-wrap
-  [handler]
-  (if (settings/dev-mode?)
-    (-> handler
-        ;; dev-only middlewares
-        (wrap-reload-modified ["src"]))
-    handler))
-
 (def app "Server entrance point."
   (-> (handler/site all-routes)
       ;; various middlewares to go here
-      (dev-wrap)))
+      (wrap-reload-modified)))
 
 (defn start-server
   "Start server. Call .stop on return value to stop server."
@@ -46,5 +56,5 @@
     (run-jetty #'app {:port port
                       :join? false})))
 
-(defn -main [& [port & args]]
+(defn -main [& [port & _args]]
   (start-server (and port (Integer/parseInt port))))
