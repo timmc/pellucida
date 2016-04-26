@@ -30,6 +30,7 @@ Keys are documented in `org.timmc.pellucida.settings`.
 
 ## TODO
 
+- Fix bug in pellucida or kpawebgen that is losing geocode tags
 - Add base filter sets (gallery, v1-pub...) so we can host entire old
   gallery along with newer filtered set. (Highest priority, allows
   migration.)
