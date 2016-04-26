@@ -1,5 +1,5 @@
-(ns org.timmc.pellucida
-  "PELL_CONFIG=path/to/config.clj lein ring server-headless"
+(ns org.timmc.pellucida.routes
+  "Main entry for Pellucida (wrapped by launch.clj)."
   (:require
    ring.middleware.reload-modified
    (compojure (route :as route)
