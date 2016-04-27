@@ -50,11 +50,12 @@
 
 (defn start-server
   "Start server. Call .stop on return value to stop server."
-  [port]
-  (let [port (or port (@settings/config :port) 3000)]
+  [config-path]
+  (settings/load-config! config-path)
+  (let [port (@settings/config :port)]
     (println "Running pellucida on port" port)
     (run-jetty #'app {:port port
                       :join? false})))
 
-(defn -main [& [port & _args]]
-  (start-server (and port (Integer/parseInt port))))
+(defn -main [config-path & _more]
+  (start-server config-path))

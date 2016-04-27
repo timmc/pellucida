@@ -65,16 +65,16 @@ To use the filesystem proxy, use /proxy-image/."
     (println "WARN: Unexpected config keys:" remaining))
   cnf)
 
-(defn load-config
-  []
-  (if-let [cnf-path (or (System/getenv "PELL_CONFIG") "conf/production.clj")]
-    (binding [*read-eval* false]
-      (validate (read-string (slurp cnf-path))))
-    (throw (RuntimeException. "Missing PELL_CONFIG environment variable."))))
-
-(defonce ^{:doc "Delay: :thumbs-proxy-base, :thumbs-link-base, :gallery-db"}
+(defonce ^{:doc "A derefable containing the config."}
   config
-  (delay (load-config)))
+  (promise))
+
+(defn load-config!
+  "Set config from path."
+  [config-path]
+  (deliver config
+           (binding [*read-eval* false]
+             (validate (read-string (slurp config-path :encoding "UTF-8"))))))
 
 (defn dev-mode?
   "Return true if running in dev mode.

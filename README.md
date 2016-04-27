@@ -7,7 +7,7 @@ A photo gallery website fed by kpawebgen, written in Clojure.
 With Leiningen v2:
 
 ```clojure
-PELL_CONFIG=path/to/config.clj lein run
+lein run path/to/config.clj
 ```
 
 Configuration is in Clojure, and is expected to look something like this:
