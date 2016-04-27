@@ -1,13 +1,13 @@
 # pellucida
 
-A web gallery fed by kpawebgen, written in Clojure.
+A photo gallery website fed by kpawebgen, written in Clojure.
 
 ## Usage
 
 With Leiningen v2:
 
 ```clojure
-PELL_CONFIG=path/to/config.clj PELL_DEV=true lein run
+PELL_CONFIG=path/to/config.clj lein run
 ```
 
 Configuration is in Clojure, and is expected to look something like this:
@@ -17,7 +17,7 @@ Configuration is in Clojure, and is expected to look something like this:
  :thumbs-proxy-base "/home/timmc/photos/web/gen/"
  :gallery-db "/home/timmc/photos/web/kpawebgen.db3"
  ;; Optional keys
- :gmaps-api-key "AB..." ;; Google Maps v2 API key
+ :google-static-maps-v2-api-key-browser "AI..." ;; Google Maps v2 API key
  :btc-donate-addr "1..."
  :port 8080}
 ```
@@ -34,9 +34,7 @@ Keys are documented in `org.timmc.pellucida.settings`.
     - Double-slash on legacy-v1 redirect from unfiltered is causing 404
     - Geocode maps no longer link to a map that labels the marker, now
       that Google Maps has been updated.
-- Add base filter sets (gallery, v1-pub...) so we can host entire old
-  gallery along with newer filtered set. (Highest priority, allows
-  migration.)
+- Show mode switcher (or remover) now that modes are supported
 - Sort by creation chronology, image ID, or newest present in gallery
   (last may not be possible, but is most interesting for an RSS feed)
 - Fetch new gallery DB on demand/regularly (use ephemeral filesystem)
@@ -44,7 +42,7 @@ Keys are documented in `org.timmc.pellucida.settings`.
 
 ## License
 
-Copyright © 2012–2014 Tim McCormack, except for vendored items in
+Copyright © 2012–2016 Tim McCormack, except for vendored items in
 `./resources/public/vendor`.
 
 Distributed under the Eclipse Public License v1.0, the same as Clojure.
