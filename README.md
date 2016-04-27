@@ -31,8 +31,9 @@ Keys are documented in `org.timmc.pellucida.settings`.
 ## TODO
 
 - Bugfixes:
-    - Something in pellucida or kpawebgen is losing geocode tags
     - Double-slash on legacy-v1 redirect from unfiltered is causing 404
+    - Geocode maps no longer link to a map that labels the marker, now
+      that Google Maps has been updated.
 - Add base filter sets (gallery, v1-pub...) so we can host entire old
   gallery along with newer filtered set. (Highest priority, allows
   migration.)

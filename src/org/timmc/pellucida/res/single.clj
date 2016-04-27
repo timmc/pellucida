@@ -3,6 +3,7 @@
   (:refer-clojure :exclude [if-let])
   (:require
    [net.cgrand.enlive-html :as e]
+   [clojure.string :as str]
    [compojure.core :refer [defroutes GET]]
    (org.timmc.pellucida (db :as db)
                         (layout :as lay)
@@ -90,19 +91,27 @@
 
 (defn sidemod-geocode
   "Transformation of the geocode sidebar module using a lat/long
-string."
-  [im-data code]
-  (let [a-href (format "http://maps.google.com/maps?q=loc:%s(%s)&t=h&iwloc=0"
-                       (pencode code)
-                       (pencode (:label im-data "Photo location")))
-        img-src (format "http://maps.google.com/staticmap?size=300x300&markers=%s&maptype=hybrid&key=%s"
-                        (pencode code)
-                        (pencode (@cnf/config :gmaps-api-key)))]
-    (e/transformation
-     [:.smd-block.geocode] (e/set-attr "data-geocode" code)
-     [:a.gco-link] (e/set-attr "href" a-href)
-     [:a.gco-link :img] (e/set-attr "src" img-src
-                                    "alt" (str "Photo taken at " code)))))
+string, either filling it in or deleting it."
+  [im-data tags]
+  (if-let [api-key (@cnf/config :google-static-maps-v2-api-key-browser)
+           is-geocoded? (tag-match? tags [["Location" "geocode"]])
+           coords (find-geocode tags)]
+    (let [a-href (format "https://maps.google.com/maps?q=loc:%s(%s)&t=h&iwloc=0"
+                         (pencode coords)
+                         (pencode (:label im-data "Photo location")))
+          img-src (str "https://maps.googleapis.com/maps/api/staticmap?"
+                       (str/join \&
+                                 ["zoom=13"
+                                  "size=300x300"
+                                  "maptype=hybrid"
+                                  (str "markers=" (pencode coords))
+                                  (str "key=" (pencode api-key))]))]
+      (e/transformation
+       [:.smd-block.geocode] (e/set-attr "data-geocode" coords)
+       [:a.gco-link] (e/set-attr "href" a-href)
+       [:a.gco-link :img] (e/set-attr "src" img-src
+                                      "alt" (str "Photo taken at " coords))))
+    delete))
 
 (defn sidemod-libre
   []
@@ -143,11 +152,7 @@ string."
            delete)
 
          [:.smd-block.geocode]
-         (if-let [_ (@cnf/config :gmaps-api-key)
-                  _ (tag-match? tags [["Location" "geocode"]])
-                  code (find-geocode tags)]
-           (sidemod-geocode data code)
-           delete)
+         (sidemod-geocode data tags)
 
          [:.smd-block.license.nonfree]
          (if (tag-match? tags [["Meta" "free-licensed"]])

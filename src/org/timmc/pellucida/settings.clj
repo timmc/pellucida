@@ -27,7 +27,11 @@ To use the filesystem proxy, use /proxy-image/."
     :validate string?}
 
    :gmaps-api-key
-   {:doc "Google Maps v2 API key"
+   {:doc "Google Maps v2 API key - DEPRECATED"
+    :validate string?}
+
+   :google-static-maps-v2-api-key-browser
+   {:doc "Google Static Maps v2 API key for browser usage"
     :validate string?}
 
    :btc-donate-addr
