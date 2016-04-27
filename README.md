@@ -31,7 +31,6 @@ Keys are documented in `org.timmc.pellucida.settings`.
 ## TODO
 
 - Bugfixes:
-    - Double-slash on legacy-v1 redirect from unfiltered is causing 404
     - Geocode maps no longer link to a map that labels the marker, now
       that Google Maps has been updated.
 - Show mode switcher (or remover) now that modes are supported
