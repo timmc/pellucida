@@ -13,7 +13,7 @@
                             (proxy-images :refer [proxy-image-routes])
                             (legacy-v1 :refer [legacy-v1-routes])
                             (stats :refer [stats-routes]))
-   [ring.adapter.jetty :refer [run-jetty]]))
+   [ring.adapter.jetty :as jetty]))
 
 (def reloadable-src-dirs
   ["src"])
@@ -53,8 +53,8 @@
   [port]
   (let [port (or port (@settings/config :port) 3000)]
     (println "Running pellucida on port" port)
-    (run-jetty #'app {:port port
-                      :join? false})))
+    (jetty/run-jetty #'app {:port port
+                            :join? false})))
 
 (defn -main [& [port & _args]]
   (start-server (and port (Integer/parseInt port))))
