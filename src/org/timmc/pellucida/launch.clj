@@ -1,5 +1,6 @@
 (ns org.timmc.pellucida.launch
-  "AOT-prevention dynamic loader for `org.timmc.pellucida.routes`.")
+  "AOT-prevention dynamic loader for `org.timmc.pellucida.routes`."
+  (:gen-class))
 
 (defn -main
   "Chain to routes.clj"

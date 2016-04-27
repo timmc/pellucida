@@ -3,7 +3,8 @@
   :url "https://github.com/timmc/pellucida"
   :license {:name "Eclipse Public License"
             :url "http://www.eclipse.org/legal/epl-v10.html"}
-  :main org.timmc.pellucida.launch ;; AOT wrapper
+  :main org.timmc.pellucida.launch
+  :aot [org.timmc.pellucida.launch]
   :repl-options {:init-ns org.timmc.pellucida.routes}
   :min-lein-version "2"
   :dependencies [[org.clojure/clojure "1.8.0"]
