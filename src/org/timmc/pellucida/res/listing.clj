@@ -60,8 +60,7 @@
    [:.fbx-remove] (e/set-attr :href
                               (ln/listing mode
                                           (remove #(= % f) user-filters)
-                                          ;; TODO: Set page back to 0?
-                                          page))))
+                                          0))))
 
 (def per-page 30)
 
