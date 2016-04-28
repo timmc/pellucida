@@ -51,10 +51,11 @@ three input page numbers (where available)."
       (when (not= lst cur)
         [lst]))))
 
+(def pg (e/html-resource "org/timmc/pellucida/html/pager.html"))
+
 (defn build-pager
   [pag linker]
-  (let [pg (e/html-resource "org/timmc/pellucida/html/pager.html")
-        [prev gonum elide current next oob empty]
+  (let [[prev gonum elide current next oob empty]
         (map #(first (e/select pg [%]))
              [:.pgr-prev :.pgr-num :.pgr-elide :.pgr-current
               :.pgr-next :.pgr-oob :.pgr-empty])
