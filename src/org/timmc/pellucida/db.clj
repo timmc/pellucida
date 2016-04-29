@@ -6,14 +6,6 @@
             [cheshire.core :as json]
             [org.timmc.pellucida.settings :as settings]))
 
-;;;; Connection spec
-
-(defonce ^:dynamic *db-spec*
-  {:classname "org.sqlite.JDBC"
-   :subprotocol "sqlite"
-   ;; :subname "FILL IN"
-   })
-
 ;;;; Version checking
 
 (def acceptable-gallery-versions
@@ -98,7 +90,9 @@ parameters) and yield a realized result collection. The value of
 #'last-check is usable after this function completes."
   [sql-params]
   (sql/with-db-connection
-    [db-con (assoc *db-spec* :subname (:gallery-db @settings/config))]
+    [db-con {:classname "org.sqlite.JDBC"
+             :subprotocol "sqlite"
+             :subname (:gallery-db @settings/config)}]
     (check-db db-con)
     (sql/query db-con sql-params std-query-opts)))
 
