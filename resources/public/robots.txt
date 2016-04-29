@@ -1,0 +1,6 @@
+# Policy applied via meta tags and a.rel attributes.
+
+# Custom archiving: Please do not index (or follow links to) /v2/list
+# pages where the query string contains keys other than "mode", as
+# these are filtered views with a high cardinality of possible
+# combinations. ?mode=raw will give the unfiltered view.

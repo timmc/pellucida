@@ -33,7 +33,7 @@ Keys are documented in `org.timmc.pellucida.settings`.
 - Bugfixes:
     - Geocode maps no longer link to a map that labels the marker, now
       that Google Maps has been updated.
-- Add robots.txt, favicon.ico
+    - Tags page does not respect mode
 - Show mode switcher (or remover) now that modes are supported
 - Sort by creation chronology, image ID, or newest present in gallery
   (last may not be possible, but is most interesting for a feed)

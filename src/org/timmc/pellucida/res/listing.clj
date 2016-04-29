@@ -3,6 +3,7 @@
   (:require
    [org.timmc.handy :as handy]
    [net.cgrand.enlive-html :as e]
+   [org.timmc.pellucida.enlive-utils :as eu]
    [compojure.core :refer [defroutes GET]]
    (org.timmc.pellucida (db :as db)
                         (layout :as lay)
@@ -74,6 +75,10 @@
     (lay/standard
      pg
      (e/transformation
+      [:head] (if (seq user-filters)
+                (e/append (e/html [:meta {:name "robots",
+                                          :content "noindex,nofollow"}]))
+                eu/no-op)
       ;; Delete the existing-filters part if no user filters applied.
       [:.fbx-existing] (when (seq user-filters) identity)
       [:.fbx-existing :ul :li] (e/clone-for [f user-filters]

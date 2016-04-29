@@ -3,6 +3,7 @@
   (:refer-clojure :exclude [if-let])
   (:require
    [net.cgrand.enlive-html :as e]
+   [org.timmc.pellucida.enlive-utils :as eu]
    [clojure.string :as str]
    [compojure.core :refer [defroutes GET]]
    (org.timmc.pellucida (db :as db)
@@ -64,14 +65,6 @@
                (for [{:keys [cat tag]} im-tags]
                  [cat tag]))))
 
-(def no-op
-  "Transformation that does nothing."
-  (e/transformation))
-
-(def delete
-  "Transformation that deletes the selection."
-  (e/substitute []))
-
 (def geocode-match
   #"^(-?[0-9]{1,3}\.[0-9]{3,7}),(-?[0-9]{1,3}\.[0-9]{3,7})$")
 
@@ -111,7 +104,7 @@ string, either filling it in or deleting it."
        [:a.gco-link] (e/set-attr "href" a-href)
        [:a.gco-link :img] (e/set-attr "src" img-src
                                       "alt" (str "Photo taken at " coords))))
-    delete))
+    eu/delete))
 
 (defn sidemod-libre
   []
@@ -122,7 +115,7 @@ string, either filling it in or deleting it."
                         [:a.donate] (e/set-attr "href"
                                                 (str "bitcoin:" btc-addr))
                         [:.bitcoin-addr] (e/content btc-addr))
-                       delete))))
+                       eu/delete))))
 
 (defn single-page "Render a page for a single photo."
   [mode id]
@@ -148,21 +141,21 @@ string, either filling it in or deleting it."
          [:.smd-block.unidentified]
          (if (tag-match? tags [["Meta" "unidentified"]
                                ["Meta" "identification unsure"]])
-           no-op
-           delete)
+           eu/no-op
+           eu/delete)
 
          [:.smd-block.geocode]
          (sidemod-geocode data tags)
 
          [:.smd-block.license.nonfree]
          (if (tag-match? tags [["Meta" "free-licensed"]])
-           delete
-           no-op)
+           eu/delete
+           eu/no-op)
 
          [:.smd-block.license.libre]
          (if (tag-match? tags [["Meta" "free-licensed"]])
            (sidemod-libre)
-           delete))
+           eu/delete))
         {:doc-title (:label data)
          :page-title (:label data)
          :mode mode})))
