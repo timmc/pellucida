@@ -67,7 +67,7 @@ To use the filesystem proxy, use /proxy-image/."
 
 (defn load-config
   []
-  (if-let [cnf-path (or (System/getenv "PELL_CONFIG") "conf/production.clj")]
+  (if-let [cnf-path (System/getenv "PELL_CONFIG")]
     (binding [*read-eval* false]
       (validate (read-string (slurp cnf-path))))
     (throw (RuntimeException. "Missing PELL_CONFIG environment variable."))))

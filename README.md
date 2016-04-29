@@ -1,6 +1,14 @@
 # pellucida
 
-A photo gallery website fed by kpawebgen, written in Clojure.
+A photo gallery website fed by [kpawebgen](https://github.com/timmc/kpawebgen),
+written in Clojure.
+
+## Demo
+
+Currently (April 2016) deployed as http://gallery.brainonfire.net/ on
+[NearlyFreeSpeech.net](https://www.nearlyfreespeech.net/). I developed
+it on Heroku as pellucida.herokuapp.com, so you may see some
+references to that in the codebase and commit history.
 
 ## Usage
 
