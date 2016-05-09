@@ -4,6 +4,7 @@
    [net.cgrand.enlive-html :as e]
    [compojure.core :refer [defroutes GET]]
    (org.timmc.pellucida (db :as db)
+                        (filter :as filter)
                         (layout :as lay)
                         (mode :as m)
                         (link :as ln))))
@@ -12,11 +13,16 @@
 
 (defn tags-counted
   "Yield table of :cat, :tag, :count."
-  []
-  (db/read
-   (db/jdbc-psql ["select cat, tag, count(imageID) as count
-                  from imagetags
-                  group by cat, tag"])))
+  [mode]
+  (let [filters (filter/apply-mode [] mode)
+        [fsql fparams] (reduce filter/sql-wrap nil filters)
+        sql (str "select cat, tag, count(imageID) as count "
+                 "from imagetags "
+                 (when fsql
+                   (str "where imageID in ( " fsql  " ) "))
+                 "group by cat, tag")
+        params fparams]
+    (db/read (db/jdbc-psql [sql params]))))
 
 (defn tags-by-cat
   "Given counted tags data from DB, yield seq of pairs of category and
@@ -57,7 +63,7 @@ of tags to counts."
 
 (defn tags-page "Render a listing of recent photos."
   [mode]
-  (let [bycat (tags-by-cat (tags-counted))]
+  (let [bycat (tags-by-cat (tags-counted mode))]
     (lay/standard
      pg
      (e/transformation
