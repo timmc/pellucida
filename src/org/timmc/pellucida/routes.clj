@@ -12,7 +12,8 @@
                             (tags :refer [tags-routes])
                             (proxy-images :refer [proxy-image-routes])
                             (legacy-v1 :refer [legacy-v1-routes])
-                            (stats :refer [stats-routes]))
+                            (stats :refer [stats-routes])
+                            (feed :refer [feed-routes]))
    [ring.adapter.jetty :as jetty]))
 
 (def reloadable-src-dirs
@@ -41,7 +42,8 @@
   #'single-routes
   #'tags-routes
   #'legacy-v1-routes
-  #'stats-routes)
+  #'stats-routes
+  #'feed-routes)
 
 (def app "Server entrance point."
   (-> (handler/site all-routes)

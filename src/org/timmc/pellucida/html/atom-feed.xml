@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title></title>
+  <subtitle></subtitle>
+  <link href="" rel="self" />
+  <link href="" />
+  <id></id>
+  <updated></updated>
+  <entry>
+    <title></title>
+    <link href="" />
+    <link rel="alternate" type="text/html" href=""/>
+    <link rel="edit" href=""/>
+    <id></id>
+    <updated></updated>
+    <summary></summary>
+    <content type="xhtml"></content>
+    <author>
+      <name></name>
+    </author>
+  </entry>
+</feed>
