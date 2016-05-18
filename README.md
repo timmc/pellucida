@@ -42,11 +42,11 @@ Keys are documented in `org.timmc.pellucida.settings`.
     - Geocode maps no longer link to a map that labels the marker, now
       that Google Maps has been updated.
 - Show mode switcher (or remover) now that modes are supported
+  (involves some plumbing work)
+- Atom feed
 - Better titles, especially on filtered list view
 - Sort by creation chronology, image ID, or newest present in gallery
   (last may not be possible, but is most interesting for a feed)
-- Atom feed
-- Fetch new gallery DB on demand/regularly (use ephemeral filesystem)
 - Add Drawbridge REPL (but nREPL needs a secure way to pass auth!)
 
 ## License
