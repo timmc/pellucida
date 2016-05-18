@@ -42,6 +42,7 @@ Keys are documented in `org.timmc.pellucida.settings`.
     - Geocode maps no longer link to a map that labels the marker, now
       that Google Maps has been updated.
 - Show mode switcher (or remover) now that modes are supported
+- Better titles, especially on filtered list view
 - Sort by creation chronology, image ID, or newest present in gallery
   (last may not be possible, but is most interesting for a feed)
 - Atom feed
