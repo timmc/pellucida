@@ -41,6 +41,10 @@ Keys are documented in `org.timmc.pellucida.settings`.
 - Bugfixes:
     - Geocode maps no longer link to a map that labels the marker, now
       that Google Maps has been updated.
+    - Gallery layout shows uneven rows of images -- switch to multiple
+      of column count
+    - Tag `Content:back yard` not showing up -- confirm it is even
+      being included
 - Show mode switcher (or remover) now that modes are supported
   (involves some plumbing work)
 - Atom feed
