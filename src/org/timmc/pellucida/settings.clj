@@ -1,4 +1,5 @@
 (ns org.timmc.pellucida.settings
+  "Public API: #'config"
   (:require [clojure.set :as set]))
 
 (def keys-required
@@ -36,7 +37,13 @@ To use the filesystem proxy, use /proxy-image/."
 
    :btc-donate-addr
    {:doc "Bitcoin donation address"
-    :validate string?}})
+    :validate string?}
+
+   :acme-challenge-dir
+   {:doc "ACME challenge directory for automated cert management. Absolute path, since contents are assumed trusted."
+    :validate #(and (string? %)
+                    (.startsWith % "/"))}
+   })
 
 (def ^:internal known-keys
   (set/union (set (keys keys-required)) (set (keys keys-optional))))
@@ -72,7 +79,7 @@ To use the filesystem proxy, use /proxy-image/."
       (validate (read-string (slurp cnf-path))))
     (throw (RuntimeException. "Missing PELL_CONFIG environment variable."))))
 
-(defonce ^{:doc "Delay: :thumbs-proxy-base, :thumbs-link-base, :gallery-db"}
+(defonce ^{:doc "Config map."}
   config
   (delay (load-config)))
 
