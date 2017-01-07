@@ -37,7 +37,13 @@ To use the filesystem proxy, use /proxy-image/."
 
    :btc-donate-addr
    {:doc "Bitcoin donation address"
-    :validate string?}})
+    :validate string?}
+
+   :acme-challenge-dir
+   {:doc "ACME challenge directory for automated cert management. Absolute path, since contents are assumed trusted."
+    :validate #(and (string? %)
+                    (.startsWith % "/"))}
+   })
 
 (def ^:internal known-keys
   (set/union (set (keys keys-required)) (set (keys keys-optional))))
