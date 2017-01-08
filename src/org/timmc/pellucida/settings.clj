@@ -5,12 +5,14 @@
 (def keys-required
   {:thumbs-link-base
    {:doc "Base URL for photo links, including trailing slash.
-To use the filesystem proxy, use /proxy-image/."
+
+To use the filesystem proxy in dev mode, use /proxy-image/."
     :validate string?}
 
    :gallery-db
    {:doc "Valid path to a SQLite3 database containing the gallery data."
     :validate #(and (string? %)
+                    ;; TODO: This .exists check is probably overkill
                     (.exists (java.io.File. %)))}})
 
 (def keys-optional
@@ -19,12 +21,15 @@ To use the filesystem proxy, use /proxy-image/."
     :validate #(and (integer? %) (not (neg? %)))}
 
    :base-url
-   {:doc "Base URL for website, not ending in trailing slash."
+   {:doc "Base URL for website, not ending in trailing slash.
+
+Used for linking"
     :validate string?}
 
    :thumbs-proxy-base
-   {:doc (str "Base path for images on filesystem, if proxying."
-              " Include trailing slash.")
+   {:doc "Base path for images on filesystem, if proxying.
+
+Include trailing slash."
     :validate string?}
 
    :gmaps-api-key
@@ -32,15 +37,24 @@ To use the filesystem proxy, use /proxy-image/."
     :validate string?}
 
    :google-static-maps-v2-api-key-browser
-   {:doc "Google Static Maps v2 API key for browser usage"
+   {:doc "Google Static Maps v2 API key for browser usage.
+
+This is used for images that are geotagged."
     :validate string?}
 
    :btc-donate-addr
-   {:doc "Bitcoin donation address"
+   {:doc "Bitcoin donation address.
+
+Displayed for images where there is not a tag indicating copyright conflict
+or oher indicators of a donation link being inappropriate."
     :validate string?}
 
    :acme-challenge-dir
-   {:doc "ACME challenge directory for automated cert management. Absolute path, since contents are assumed trusted."
+   {:doc "ACME challenge directory for automated cert management.
+
+The contents of this directory will be proxied with little or no
+checking. Requires an absolute path, since contents are assumed
+trusted and not e.g. javascript or flash files."
     :validate #(and (string? %)
                     (.startsWith % "/"))}
    })
