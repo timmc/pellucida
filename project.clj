@@ -16,4 +16,6 @@
                  [org.clojure/java.jdbc "0.5.8"]
                  [enlive "1.1.6"]
                  [cheshire "5.6.1"]
-                 ])
+                 ]
+  :jvm-opts ["-Xmx60m"]
+  )

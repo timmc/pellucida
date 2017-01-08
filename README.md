@@ -15,7 +15,7 @@ references to that in the codebase and commit history.
 With Leiningen v2:
 
 ```clojure
-PELL_CONFIG=path/to/config.clj lein run
+PELL_CONFIG=path/to/config.clj lein trampoline run
 ```
 
 Configuration is in Clojure, and is expected to look something like this:
