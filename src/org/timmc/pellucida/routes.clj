@@ -13,7 +13,9 @@
                             (proxy-images :refer [proxy-image-routes])
                             (legacy-v1 :refer [legacy-v1-routes])
                             (stats :refer [stats-routes])
-                            (feed :refer [feed-routes]))
+                            (acme :refer [acme-routes])
+                            (feed :refer [feed-routes])
+                            )
    [ring.adapter.jetty :as jetty]))
 
 (def reloadable-src-dirs
@@ -43,7 +45,9 @@
   #'tags-routes
   #'legacy-v1-routes
   #'stats-routes
-  #'feed-routes)
+  #'feed-routes
+  #'acme-routes
+  )
 
 (def app "Server entrance point."
   (-> (handler/site all-routes)

@@ -117,6 +117,23 @@ string, either filling it in or deleting it."
                         [:.bitcoin-addr] (e/content btc-addr))
                        eu/delete))))
 
+(defn text-to-html-nodes
+  "Render freeform text as HTML nodes according to unobtrusive
+transformations. Yields a collection for a string, or takes nil to
+nil.
+
+Specifically, just replace line breaks with <br> nodes. Zero-length
+runs delimited by line breaks are removed from output."
+  [text]
+  (when text
+    (if (= text "")
+      [""] ;; Special case where we don't want to filter out "", not
+           ;; that the filtering really matters either way for HTML
+           ;; output -- just make it intuitive.
+      (remove empty?
+              (interpose {:tag :br, :attrs {}, :content []}
+                         (str/split text #"\n" -1))))))
+
 (defn single-page "Render a page for a single photo."
   [mode id]
   {:pre [(integer? id)]}
@@ -132,7 +149,7 @@ string, either filling it in or deleting it."
                                        (ln/photo basename suffixes :fullsize))
          [:.view-fullsize :img] (e/set-attr :src
                                             (ln/photo basename suffixes :solo))
-         [:.description] (e/content (:description data))
+         [:.description] (e/content (text-to-html-nodes (:description data)))
          [:.md-date] (e/content (str (:startDate data)))
          [:.md-angle] (e/content (str (:angle data)))
          [:.md-dim] (e/content (format "%d x %d" (:width data) (:height data)))
