@@ -3,20 +3,26 @@
 A photo gallery website fed by [kpawebgen](https://github.com/timmc/kpawebgen),
 written in Clojure.
 
+Requires a kpawebgen gallery DB version 1.
+
 ## Demo
 
-Currently (April 2016) deployed as http://gallery.brainonfire.net/ on
+Currently (January 2017) deployed as https://gallery.brainonfire.net/ on
 [NearlyFreeSpeech.net](https://www.nearlyfreespeech.net/). I developed
 it on Heroku as pellucida.herokuapp.com, so you may see some
 references to that in the codebase and commit history.
 
-## Usage
+## Running
 
-With Leiningen v2:
+With [Leiningen](https://leiningen.org/):
 
 ```clojure
 PELL_CONFIG=path/to/config.clj lein trampoline run
 ```
+
+`PELL_DEV=true` enables automatic code reloading.
+
+## Configuration
 
 Configuration is in Clojure, and is expected to look something like this:
 
@@ -30,11 +36,13 @@ Configuration is in Clojure, and is expected to look something like this:
  :port 8080}
 ```
 
-Requires a kpawebgen gallery DB version 1.
+Configuration keys are documented in `org.timmc.pellucida.settings`.
 
-Keys are documented in `org.timmc.pellucida.settings`.
 
-`PELL_DEV=true` enables automatic code reloading.
+
+## Deployment
+
+Build a jar file with `lein uberjar` and deploy as usual for Java.
 
 ## TODO
 
