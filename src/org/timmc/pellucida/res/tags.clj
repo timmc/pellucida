@@ -73,12 +73,6 @@ of tags to counts."
       :page-title "Tags, weighted by usage"
       :mode mode})))
 
-(defn maybe-param
-  [request param parse default]
-  (if-let [s (get-in request [:params param])]
-    (parse s)
-    default))
-
 (defroutes tags-routes
   (GET "/v2/tags" r
        (let [mode (m/from-request r)]
