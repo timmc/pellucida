@@ -24,16 +24,20 @@
 (def pg (e/xml-resource "org/timmc/pellucida/html/atom-feed.xml"))
 
 (defn one-entry
-  [photo-data]
+  [mode photo-data]
   (e/transformation
-   [:title] (e/content (:label photo-data))))
+   [:title] (e/content (:label photo-data))
+   [:link] (e/set-attr :href (ln/single mode (:imageID photo-data)))
+   ;; Use raw link for ID -- should be same across feeds in different
+   ;; modes.
+   [:id] (e/content (ln/single (get m/modes "raw") (:imageID photo-data)))))
 
 (defn feed-page "Produce an Atom feed of recent photos."
   [mode]
   (let [data (recent-images mode)]
     (e/at pg
           [:entry] (e/clone-for [x data]
-                                (one-entry x)))))
+                                (one-entry mode x)))))
 
 (defroutes feed-routes
   (GET "/v2/feed" r
