@@ -22,7 +22,7 @@
                           " for aiding identification")
                :filters []}])))
 
-(def default
+(def default-key
   "Shortcode for default mode."
   "gal")
 
@@ -31,12 +31,13 @@
 present or invalid."
   [request]
   (or (get modes (get-in request [:params :mode]))
-      (get modes default)))
+      (get modes default-key)))
 
 (defn qsc
   "Given a mode object, produce a coll of encoded query-string
 components."
   [mode]
+  {:pre [(associative? mode)]}
   (when (and mode
-             (not= (:shortcode mode) default))
+             (not= (:shortcode mode) default-key))
     [(str "mode=" (u/enc-queryc (:shortcode mode)))]))
