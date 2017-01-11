@@ -13,7 +13,7 @@
                  [ring/ring-jetty-adapter "1.5.1"]
                  [ring-reload-modified "0.1.1"]
                  [org.xerial/sqlite-jdbc "3.15.1"]
-                 [org.clojure/java.jdbc "0.5.8"]
+                 [org.clojure/java.jdbc "0.6.1"]
                  [enlive "1.1.6"]
                  [cheshire "5.6.3"]
                  ]
