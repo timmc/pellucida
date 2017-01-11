@@ -8,14 +8,14 @@
   :repl-options {:init-ns org.timmc.pellucida.routes} ;; Real main
   :min-lein-version "2"
   :dependencies [[org.clojure/clojure "1.8.0"]
-                 [org.timmc/handy "1.7.0"]
-                 [compojure "1.5.0"]
-                 [ring/ring-jetty-adapter "1.4.0"]
+                 [org.timmc/handy "1.7.1"]
+                 [compojure "1.5.2"]
+                 [ring/ring-jetty-adapter "1.5.1"]
                  [ring-reload-modified "0.1.1"]
-                 [org.xerial/sqlite-jdbc "3.8.11.2"]
-                 [org.clojure/java.jdbc "0.5.8"]
+                 [org.xerial/sqlite-jdbc "3.15.1"]
+                 [org.clojure/java.jdbc "0.6.1"]
                  [enlive "1.1.6"]
-                 [cheshire "5.6.1"]
+                 [cheshire "5.6.3"]
                  ]
   :jvm-opts ["-Xmx60m"]
   )
