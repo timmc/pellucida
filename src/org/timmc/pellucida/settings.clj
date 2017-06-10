@@ -86,16 +86,16 @@ trusted and not e.g. javascript or flash files."
     (println "WARN: Unexpected config keys:" remaining))
   cnf)
 
-(defn load-config
-  []
-  (if-let [cnf-path (System/getenv "PELL_CONFIG")]
-    (binding [*read-eval* false]
-      (validate (read-string (slurp cnf-path))))
-    (throw (RuntimeException. "Missing PELL_CONFIG environment variable."))))
-
-(defonce ^{:doc "Config map."}
+(defonce ^{:doc "A derefable containing the config map"}
   config
-  (delay (load-config)))
+  (promise))
+
+(defn load-config!
+  "Set config from path."
+  [config-path]
+  (deliver config
+           (binding [*read-eval* false]
+             (validate (read-string (slurp config-path :encoding "UTF-8"))))))
 
 (defn dev-mode?
   "Return true if running in dev mode.

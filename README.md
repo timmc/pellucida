@@ -17,7 +17,7 @@ references to that in the codebase and commit history.
 With [Leiningen](https://leiningen.org/):
 
 ```clojure
-PELL_CONFIG=path/to/config.clj lein trampoline run
+lein trampoline run path/to/config.clj
 ```
 
 `PELL_DEV=true` enables automatic code reloading.
