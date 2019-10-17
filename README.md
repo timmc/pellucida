@@ -7,7 +7,7 @@ Requires a kpawebgen gallery DB version 1.
 
 ## Demo
 
-Currently (January 2017) deployed as https://gallery.brainonfire.net/ on
+Currently (October 2019) deployed as https://gallery.brainonfire.net/ on
 [NearlyFreeSpeech.net](https://www.nearlyfreespeech.net/). I developed
 it on Heroku as pellucida.herokuapp.com, so you may see some
 references to that in the codebase and commit history.
@@ -59,7 +59,7 @@ Build a jar file with `lein uberjar` and deploy as usual for Java.
 
 ## License
 
-Copyright © 2012–2016 Tim McCormack, except for vendored items in
+Copyright © 2012–2019 Tim McCormack, except for vendored items in
 `./resources/public/vendor`.
 
 Distributed under the Eclipse Public License v1.0, the same as Clojure.
