@@ -10,7 +10,8 @@
                         (pager :as pager)
                         (mode :as m)
                         (filter :as filter)
-                        (link :as ln))))
+                        (link :as ln)
+                        (util :as u))))
 
 ;;;; data
 
@@ -46,7 +47,7 @@
   (e/transformation
    ;; TODO: use URL formatter
    [:a.ths-goto] (e/set-attr :href (ln/single mode (:imageID p)))
-   [:.ths-title] (e/content (:label p))
+   [:.ths-title] (e/content (u/image-title p))
    [:img.ths-solo] (e/set-attr :src (ln/photo
                                      (:basename p)
                                      (get-in @db/last-check

@@ -10,7 +10,8 @@
                         (layout :as lay)
                         (link :as ln)
                         (mode :as m)
-                        (settings :as cnf))
+                        (settings :as cnf)
+                        (util :as u))
    [org.timmc.handy :refer [if-let+] :rename {if-let+ if-let}]))
 
 (defn photo-data
@@ -91,7 +92,7 @@ string, either filling it in or deleting it."
            coords (find-geocode tags)]
     (let [a-href (format "https://maps.google.com/maps?q=loc:%s(%s)&t=h&iwloc=0"
                          (pencode coords)
-                         (pencode (:label im-data "Photo location")))
+                         (pencode (or (:label im-data) "Photo location")))
           img-src (str "https://maps.googleapis.com/maps/api/staticmap?"
                        (str/join \&
                                  ["zoom=13"
@@ -140,7 +141,8 @@ runs delimited by line breaks are removed from output."
   (if-let [data (photo-data id)]
     (let [tags (get-tags id)
           basename (:basename data)
-          suffixes (get-in @db/last-check [:config "sizeSuffixes"])]
+          suffixes (get-in @db/last-check [:config "sizeSuffixes"])
+          title (u/image-title data)]
       (lay/render
        (lay/standard
         pg
@@ -173,8 +175,8 @@ runs delimited by line breaks are removed from output."
          (if (tag-match? tags [["Meta" "free-licensed"]])
            (sidemod-libre)
            eu/delete))
-        {:doc-title (:label data)
-         :page-title (:label data)
+        {:doc-title title
+         :page-title title
          :mode mode})))
     {:status 404
      :headers {"Content-Type" "text/html"}

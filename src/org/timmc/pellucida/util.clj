@@ -32,3 +32,9 @@ collections of strings. (Really irritating.)"
   ;; TODO replace with johnny URL lib
   ;; We allow \+ to decode as \space only in query components.
   (java.net.URLDecoder/decode r))
+
+(defn image-title
+  "Derive a best-effort title for an image."
+  [image]
+  (or (:label image)
+      (str "#" (:imageID image))))
