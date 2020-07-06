@@ -2,7 +2,7 @@
   :description "Web gallery fed by kpawebgen, a KPhotoAlbum database munger."
   :url "https://github.com/timmc/pellucida"
   :license {:name "Eclipse Public License"
-            :url "http://www.eclipse.org/legal/epl-v10.html"}
+            :url "https://www.eclipse.org/legal/epl-v10.html"}
   :main org.timmc.pellucida.launch
   :aot [org.timmc.pellucida.launch] ;; Sacrificial AOT stub
   :repl-options {:init-ns org.timmc.pellucida.routes} ;; Real main
