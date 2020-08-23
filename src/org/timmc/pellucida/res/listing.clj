@@ -53,7 +53,7 @@
                                      (get-in @db/last-check
                                              [:config "sizeSuffixes"])
                                      :thumb))
-   [:.ths-meta] (e/content (:added p))))
+   [:.ths-meta] (e/content (:startDate p))))
 
 (defn filter-one "Transformation for a filter in the filterbox."
   [mode user-filters page f]
