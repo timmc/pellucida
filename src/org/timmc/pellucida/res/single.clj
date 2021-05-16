@@ -42,7 +42,10 @@
   (e/transformation
    [:group] (e/do->
              (e/clone-for
-              [[cat-name tags] (group-by :cat tags)]
+              [[cat-name tags] (->> (sort-by str/lower-case tags)
+                                    (sort-by :implicit)
+                                    (group-by :cat)
+                                    (sort-by first))]
               (e/transformation
                [:.category] (e/content cat-name)
                [:.tag] (e/clone-for
