@@ -24,13 +24,19 @@
         params fparams]
     (db/read (db/jdbc-psql [sql params]))))
 
+(defn compare-str-casefold
+  "Compare two strings after casefolding."
+  [s1 s2]
+  (.compareTo (.toLowerCase s1) (.toLowerCase s2)))
+
 (defn tags-by-cat
   "Given counted tags data from DB, yield seq of pairs of category and
-text-sorted map of tag to count. [[category, {tag:count...}]...]."
+text-sorted map of tag to count. [[category, {tag: count...}]...]."
   [ctag-rows]
   (sort-by first
            (for [[cat rows] (group-by :cat ctag-rows)]
-             [cat (into (sorted-map) (map (juxt :tag :count) rows))])))
+             [cat (into (sorted-map-by compare-str-casefold)
+                        (map (juxt :tag :count) rows))])))
 
 ;;;; html
 
