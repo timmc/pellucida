@@ -1,7 +1,7 @@
 (ns org.timmc.pellucida.routes
   "Main entry for Pellucida (wrapped by launch.clj)."
   (:require
-   ring.middleware.reload-modified
+   ring.middleware.reload
    (compojure (route :as route)
               (handler :as handler)
               (core :refer [defroutes]))
@@ -26,9 +26,9 @@
   ;; fake handler now and a fake request when we want to reload.
   ;; TODO: This is a terrible hack, maybe just replicate the reloading
   ;; logic myself later.
-  (let [reloader (ring.middleware.reload-modified/wrap-reload-modified
+  (let [reloader (ring.middleware.reload/wrap-reload
                   identity
-                  reloadable-src-dirs)]
+                  {:dirs reloadable-src-dirs})]
     (fn wrap-reload-shim-inner [request]
       (when (settings/dev-mode?)
         (reloader nil))
