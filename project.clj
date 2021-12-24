@@ -7,15 +7,15 @@
   :aot [org.timmc.pellucida.launch] ;; Sacrificial AOT stub
   :repl-options {:init-ns org.timmc.pellucida.routes} ;; Real main
   :min-lein-version "2"
-  :dependencies [[org.clojure/clojure "1.8.0"]
+  :dependencies [[org.clojure/clojure "1.8.0"] ;; 1.9 introduces spec...
                  [org.timmc/handy "1.7.1"]
-                 [compojure "1.5.2"]
-                 [ring/ring-jetty-adapter "1.5.1"]
+                 [compojure "1.6.2"]
+                 [ring/ring-jetty-adapter "1.9.4"]
                  [ring-reload-modified "0.1.1"]
-                 [org.xerial/sqlite-jdbc "3.15.1"]
-                 [org.clojure/java.jdbc "0.6.1"]
+                 [org.xerial/sqlite-jdbc "3.36.0.3"]
+                 [org.clojure/java.jdbc "0.7.12"]
                  [enlive "1.1.6"]
-                 [cheshire "5.6.3"]
+                 [cheshire "5.10.1"]
                  ]
   :jvm-opts ["-Xmx60m"]
   )
