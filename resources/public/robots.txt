@@ -4,3 +4,24 @@
 # pages where the query string contains keys other than "mode", as
 # these are filtered views with a high cardinality of possible
 # combinations. ?mode=raw will give the unfiltered view.
+
+
+# Known bad actors (IP theft)
+
+User-agent: GPTBot
+Disallow: /
+
+User-agent: ClaudeBot
+Disallow: /
+
+User-agent: Claude-Web
+Disallow: /
+
+User-agent: ChatGPT-User
+Disallow: /
+
+User-agent: anthropic-ai
+Disallow: /
+
+User-agent: cohere-ai
+Disallow: /
